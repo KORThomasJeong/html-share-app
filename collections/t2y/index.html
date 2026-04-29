@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>반도체 Fab 건설 리드타임 30% 단축 프로젝트</title>
+  <link rel="stylesheet" href="html/css/style.css">
+  <style>
+    /* Dashboard-specific styles */
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      color: white;
+      padding: 3.5rem 2rem 3rem;
+      text-align: center;
+      margin-bottom: 0;
+    }
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.02em;
+    }
+    .hero .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.85;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: #EA002C;
+      color: white;
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-card h2 {
+      font-size: 1.3rem;
+      color: #1a1a2e;
+      border-bottom: 2px solid #EA002C;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.2rem;
+    }
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 1.2rem;
+      background: #f8fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .stat-item .stat-label {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 0.3rem;
+    }
+    .stat-item .stat-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .stat-item .stat-value.red { color: #EA002C; }
+    .stat-item .stat-value.blue { color: #2563eb; }
+
+    /* Navigation Grid */
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .nav-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: all 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      border-left: 4px solid #2563eb;
+    }
+    .nav-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .nav-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+      color: #1a1a2e;
+    }
+    .nav-card p {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .nav-card .card-number {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #2563eb;
+      margin-bottom: 0.4rem;
+    }
+    .nav-card.highlight { border-left-color: #EA002C; }
+    .nav-card.highlight .card-number { color: #EA002C; }
+    .nav-card.green { border-left-color: #059669; }
+    .nav-card.green .card-number { color: #059669; }
+    .nav-card.orange { border-left-color: #d97706; }
+    .nav-card.orange .card-number { color: #d97706; }
+
+    /* Section Title */
+    .section-title {
+      font-size: 1.3rem;
+      color: #1a1a2e;
+      margin: 2rem 0 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #EA002C;
+    }
+
+    /* Timeline Overview */
+    .phase-timeline {
+      display: flex;
+      gap: 0;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .phase-item {
+      flex: 1;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+    .phase-item:nth-child(1) { background: #1a1a2e; }
+    .phase-item:nth-child(2) { background: #2563eb; }
+    .phase-item:nth-child(3) { background: #059669; }
+    .phase-item:nth-child(4) { background: #d97706; }
+    .phase-item h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .phase-item .phase-date {
+      font-size: 0.75rem;
+      opacity: 0.85;
+    }
+    .phase-item .phase-desc {
+      font-size: 0.8rem;
+      opacity: 0.9;
+      margin-top: 0.3rem;
+    }
+
+    /* Team Table */
+    .team-section {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .team-section h2 {
+      font-size: 1.3rem;
+      color: #1a1a2e;
+      border-bottom: 2px solid #EA002C;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 1.5rem; }
+      .nav-grid { grid-template-columns: 1fr; }
+      .summary-stats { grid-template-columns: repeat(2, 1fr); }
+      .phase-timeline { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero Header -->
+<div class="hero">
+  <h1>반도체 Fab 건설 리드타임 30% 단축 프로젝트</h1>
+  <p class="subtitle">SK에코플랜트 Hi-tech 사업부 | 2026년 4~5월</p>
+  <span class="badge">4주 리서치 프로젝트</span>
+</div>
+
+<div class="container">
+
+  <!-- Project Summary Card -->
+  <div class="summary-card">
+    <h2>프로젝트 요약</h2>
+    <div class="summary-stats">
+      <div class="stat-item">
+        <div class="stat-label">프로젝트 목표</div>
+        <div class="stat-value red">30% 단축</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">현행 건설 기간</div>
+        <div class="stat-value">24~36개월</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">목표 기간</div>
+        <div class="stat-value blue">~19개월</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">AI/DT 과제</div>
+        <div class="stat-value">16~18개</div>
+      </div>
+    </div>
+    <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">
+      <strong>접근방법:</strong> 5대 영역(설계/엔지니어링, 조달/SCM, 시공/건설, MEP/클린룸, 시운전/Qualification)별 심층 리서치 + 글로벌 벤치마킹 + AI/DT 과제 도출 및 우선순위화를 통한 실행 로드맵 수립
+    </p>
+  </div>
+
+  <!-- Navigation Grid -->
+  <h2 class="section-title">프로젝트 페이지 네비게이션</h2>
+
+  <div class="nav-grid">
+    <!-- Row 1 -->
+    <a href="html/00-project-overview.html" class="nav-card highlight">
+      <div class="card-number">00</div>
+      <h3>프로젝트 개요 & 워크플랜</h3>
+      <p>배경, 목표, 범위, 4주 워크플랜, 팀 구성</p>
+    </a>
+    <a href="html/01-design-engineering.html" class="nav-card">
+      <div class="card-number">01</div>
+      <h3>설계/엔지니어링</h3>
+      <p>담당: 김선문 | 설계 프로세스 분석 및 단축 방안</p>
+    </a>
+    <a href="html/02-procurement-scm.html" class="nav-card">
+      <div class="card-number">02</div>
+      <h3>조달/SCM</h3>
+      <p>담당: 허재경 | 조달 프로세스 분석 및 단축 방안</p>
+    </a>
+
+    <!-- Row 2 -->
+    <a href="html/03-construction.html" class="nav-card">
+      <div class="card-number">03</div>
+      <h3>시공/건설</h3>
+      <p>담당: 김정훈 | 시공 프로세스 분석 및 단축 방안</p>
+    </a>
+    <a href="html/04-mep-cleanroom.html" class="nav-card">
+      <div class="card-number">04</div>
+      <h3>MEP/클린룸 설비</h3>
+      <p>담당: 이민석 | MEP 프로세스 분석 및 단축 방안</p>
+    </a>
+    <a href="html/05-commissioning.html" class="nav-card">
+      <div class="card-number">05</div>
+      <h3>시운전/Qualification</h3>
+      <p>담당: 백민우 | 시운전 프로세스 분석 및 단축 방안</p>
+    </a>
+
+    <!-- Row 3 -->
+    <a href="html/06-integrated-analysis.html" class="nav-card green">
+      <div class="card-number">06</div>
+      <h3>통합 분석 & 크리티컬 패스</h3>
+      <p>영역 간 연계 분석, 크리티컬 패스, 통합 시나리오</p>
+    </a>
+    <a href="html/07-aidt-initiatives.html" class="nav-card orange">
+      <div class="card-number">07</div>
+      <h3>AI/DT 과제 Pool & 우선순위</h3>
+      <p>16~18개 과제, 우선순위 매트릭스, Quick Win & Strategic</p>
+    </a>
+    <a href="html/08-final-report.html" class="nav-card highlight">
+      <div class="card-number">08</div>
+      <h3>최종 보고서 & 로드맵</h3>
+      <p>Executive Summary, 종합 분석, 실행 로드맵, 제언</p>
+    </a>
+  </div>
+
+  <!-- Timeline Overview -->
+  <h2 class="section-title">프로젝트 타임라인</h2>
+
+  <div class="phase-timeline">
+    <div class="phase-item">
+      <h4>Phase 0: 킥오프</h4>
+      <div class="phase-date">4/23~4/24 (2일)</div>
+      <div class="phase-desc">프로젝트 셋업, 역할 분담, 리서치 프레임 확정</div>
+    </div>
+    <div class="phase-item">
+      <h4>Phase 1: 심층 리서치</h4>
+      <div class="phase-date">4/27~4/30 (4일)</div>
+      <div class="phase-desc">영역별 As-Is 분석, 벤치마킹, Pain Point 도출</div>
+    </div>
+    <div class="phase-item">
+      <h4>Phase 2: 과제 도출</h4>
+      <div class="phase-date">5/12~5/16 (5일)</div>
+      <div class="phase-desc">AI/DT 과제 도출, 우선순위화, 통합 워크숍</div>
+    </div>
+    <div class="phase-item">
+      <h4>Phase 3: 최종 보고</h4>
+      <div class="phase-date">5/19~5/22 (4일)</div>
+      <div class="phase-desc">최종 보고서 작성, 로드맵 확정, 5/22 Final 발표</div>
+    </div>
+  </div>
+
+  <!-- Team Overview -->
+  <div class="team-section">
+    <h2>팀 구성</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>담당자</th>
+          <th>담당 영역</th>
+          <th>주요 분석 내용</th>
+          <th>관련 페이지</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>김선문</strong></td>
+          <td>설계/엔지니어링</td>
+          <td>BIM, 모듈러 설계, AI 기반 설계 자동화</td>
+          <td><a href="html/01-design-engineering.html" style="color: #2563eb;">01. 설계/엔지니어링</a></td>
+        </tr>
+        <tr>
+          <td><strong>허재경</strong></td>
+          <td>조달/SCM</td>
+          <td>선행 발주, 디지털 SCM, 공급망 최적화</td>
+          <td><a href="html/02-procurement-scm.html" style="color: #2563eb;">02. 조달/SCM</a></td>
+        </tr>
+        <tr>
+          <td><strong>김정훈</strong></td>
+          <td>시공/건설</td>
+          <td>모듈러 건설, 로보틱스, 공정 최적화</td>
+          <td><a href="html/03-construction.html" style="color: #2563eb;">03. 시공/건설</a></td>
+        </tr>
+        <tr>
+          <td><strong>이민석</strong></td>
+          <td>MEP/클린룸 설비</td>
+          <td>프리팹, 클린룸 시공 혁신, 디지털 트윈</td>
+          <td><a href="html/04-mep-cleanroom.html" style="color: #2563eb;">04. MEP/클린룸</a></td>
+        </tr>
+        <tr>
+          <td><strong>백민우</strong></td>
+          <td>시운전/Qualification</td>
+          <td>자동화 시운전, 디지털 커미셔닝, 인증 최적화</td>
+          <td><a href="html/05-commissioning.html" style="color: #2563eb;">05. 시운전/Qual</a></td>
+        </tr>
+        <tr>
+          <td><strong>유권철</strong></td>
+          <td>공정관리</td>
+          <td>공정 계획 수립, 크리티컬 패스 분석, 공기 단축 방안 도출</td>
+          <td><a href="html/06-process-management.html" style="color: #2563eb;">06. 공정관리</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  <p>SK에코플랜트 Hi-tech | Fab 리드타임 30% 단축 프로젝트 | 2026</p>
+</footer>
+
+</body>
+</html>

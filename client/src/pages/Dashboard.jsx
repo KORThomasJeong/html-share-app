@@ -1,22 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-    LayoutGrid, List, Plus, Search, ExternalLink,
+    LayoutGrid, List, Plus,
     Copy, Trash2, Edit, Eye, EyeOff, LogOut
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import EditorModal from '../components/EditorModal';
+import Collections from './Collections';
+import Groups from './Groups';
+import Users from './Users';
 
 const Dashboard = () => {
+    const [currentUser, setCurrentUser] = useState(null);
+    const [activeTab, setActiveTab] = useState('pages');
+
+    // Pages state
     const [pages, setPages] = useState([]);
-    const [viewMode, setViewMode] = useState('tile'); // 'tile' or 'list'
+    const [viewMode, setViewMode] = useState('tile');
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingPage, setEditingPage] = useState(null);
+
     const navigate = useNavigate();
+
+    // Fetch current user info on mount
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        axios.get('/api/me', { headers: { Authorization: `Bearer ${token}` } })
+            .then(res => {
+                setCurrentUser(res.data);
+                localStorage.setItem('userInfo', JSON.stringify(res.data));
+            })
+            .catch(() => navigate('/login'));
+    }, []);
 
     const fetchPages = async () => {
         try {
@@ -40,8 +59,12 @@ const Dashboard = () => {
         fetchPages();
     }, [page]);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        try {
+            await axios.post('/api/logout');
+        } catch {}
         localStorage.removeItem('token');
+        localStorage.removeItem('userInfo');
         navigate('/login');
     };
 
@@ -67,9 +90,9 @@ const Dashboard = () => {
         fetchPages();
     };
 
-    const handleTogglePublish = async (page) => {
+    const handleTogglePublish = async (p) => {
         const token = localStorage.getItem('token');
-        await axios.put(`/api/pages/${page.id}`, { isPublished: !page.isPublished }, {
+        await axios.put(`/api/pages/${p.id}`, { isPublished: !p.isPublished }, {
             headers: { Authorization: `Bearer ${token}` }
         });
         fetchPages();
@@ -81,88 +104,195 @@ const Dashboard = () => {
         alert('Link copied to clipboard!');
     };
 
+    const isAdmin = currentUser?.role === 'admin';
+
+    const tabs = [
+        { key: 'pages', label: 'Pages' },
+        { key: 'collections', label: 'Collections' },
+        ...(isAdmin ? [
+            { key: 'groups', label: '그룹' },
+            { key: 'users', label: '사용자' },
+        ] : []),
+    ];
+
     return (
         <div className="container">
             <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
                 <div>
                     <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>HTML Share Admin</h1>
-                    <p style={{ color: 'var(--text-secondary)' }}>Manage your shared pages</p>
+                    <p style={{ color: 'var(--text-secondary)' }}>
+                        {currentUser ? `${currentUser.username} (${currentUser.role})` : 'Manage your shared pages'}
+                    </p>
                 </div>
                 <div style={{ display: 'flex', gap: '1rem' }}>
-                    <button onClick={() => { setEditingPage(null); setIsModalOpen(true); }} className="btn btn-primary">
-                        <Plus size={18} /> New Page
-                    </button>
+                    {activeTab === 'pages' && (
+                        <button onClick={() => { setEditingPage(null); setIsModalOpen(true); }} className="btn btn-primary">
+                            <Plus size={18} /> New Page
+                        </button>
+                    )}
                     <button onClick={handleLogout} className="btn btn-ghost" style={{ color: 'var(--danger)' }}>
                         <LogOut size={18} />
                     </button>
                 </div>
             </header>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--bg-secondary)', padding: '0.25rem', borderRadius: 'var(--radius)' }}>
+            {/* Tab bar */}
+            <div className="tab-bar">
+                {tabs.map(t => (
                     <button
-                        className={`btn ${viewMode === 'tile' ? 'btn-primary' : 'btn-ghost'}`}
-                        style={{ padding: '0.5rem' }}
-                        onClick={() => setViewMode('tile')}
+                        key={t.key}
+                        className={`tab-btn${activeTab === t.key ? ' active' : ''}`}
+                        onClick={() => setActiveTab(t.key)}
                     >
-                        <LayoutGrid size={18} />
+                        {t.label}
                     </button>
-                    <button
-                        className={`btn ${viewMode === 'list' ? 'btn-primary' : 'btn-ghost'}`}
-                        style={{ padding: '0.5rem' }}
-                        onClick={() => setViewMode('list')}
-                    >
-                        <List size={18} />
-                    </button>
-                </div>
-
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                    <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Page {page} of {totalPages}</span>
-                    <button
-                        className="btn btn-ghost"
-                        disabled={page <= 1}
-                        onClick={() => setPage(p => p - 1)}
-                    >Previous</button>
-                    <button
-                        className="btn btn-ghost"
-                        disabled={page >= totalPages}
-                        onClick={() => setPage(p => p + 1)}
-                    >Next</button>
-                </div>
+                ))}
             </div>
 
-            {loading ? (
-                <div style={{ textAlign: 'center', padding: '4rem' }}>Loading...</div>
-            ) : (
+            {/* Pages Tab */}
+            {activeTab === 'pages' && (
                 <>
-                    {viewMode === 'list' ? (
-                        <div className="card">
-                            <table className="table">
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Status</th>
-                                        <th>Created</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                        <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--bg-secondary)', padding: '0.25rem', borderRadius: 'var(--radius)' }}>
+                            <button
+                                className={`btn ${viewMode === 'tile' ? 'btn-primary' : 'btn-ghost'}`}
+                                style={{ padding: '0.5rem' }}
+                                onClick={() => setViewMode('tile')}
+                            >
+                                <LayoutGrid size={18} />
+                            </button>
+                            <button
+                                className={`btn ${viewMode === 'list' ? 'btn-primary' : 'btn-ghost'}`}
+                                style={{ padding: '0.5rem' }}
+                                onClick={() => setViewMode('list')}
+                            >
+                                <List size={18} />
+                            </button>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Page {page} of {totalPages}</span>
+                            <button
+                                className="btn btn-ghost"
+                                disabled={page <= 1}
+                                onClick={() => setPage(p => p - 1)}
+                            >Previous</button>
+                            <button
+                                className="btn btn-ghost"
+                                disabled={page >= totalPages}
+                                onClick={() => setPage(p => p + 1)}
+                            >Next</button>
+                        </div>
+                    </div>
+
+                    {loading ? (
+                        <div style={{ textAlign: 'center', padding: '4rem' }}>Loading...</div>
+                    ) : (
+                        <>
+                            {viewMode === 'list' ? (
+                                <div className="card">
+                                    <table className="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>소유자</th>
+                                                <th>공개범위</th>
+                                                <th>Status</th>
+                                                <th>Created</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {pages.map(p => (
+                                                <tr key={p.id}>
+                                                    <td>
+                                                        <div style={{ fontWeight: '500' }}>{p.title}</div>
+                                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>/s/{p.slug}</div>
+                                                    </td>
+                                                    <td>{p.owner?.username || '알 수 없음'}</td>
+                                                    <td>
+                                                        <span className={`badge badge-${p.visibility || 'private'}`}>
+                                                            {p.visibility || 'private'}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span className={`badge ${p.isPublished ? 'badge-success' : 'badge-neutral'}`}>
+                                                            {p.isPublished ? 'Published' : 'Draft'}
+                                                        </span>
+                                                    </td>
+                                                    <td style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+                                                        {new Date(p.createdAt).toLocaleDateString()}
+                                                    </td>
+                                                    <td>
+                                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                            <button onClick={() => copyToClipboard(p.slug)} className="btn btn-ghost" title="Copy Link"><Copy size={16} /></button>
+                                                            <button onClick={() => { setEditingPage(p); setIsModalOpen(true); }} className="btn btn-ghost" title="Edit"><Edit size={16} /></button>
+                                                            <button onClick={() => handleTogglePublish(p)} className="btn btn-ghost" title={p.isPublished ? "Unpublish" : "Publish"}>
+                                                                {p.isPublished ? <EyeOff size={16} /> : <Eye size={16} />}
+                                                            </button>
+                                                            <button onClick={() => handleDelete(p.id)} className="btn btn-ghost" style={{ color: 'var(--danger)' }} title="Delete"><Trash2 size={16} /></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ) : (
+                                <div className="grid-view">
                                     {pages.map(p => (
-                                        <tr key={p.id}>
-                                            <td>
-                                                <div style={{ fontWeight: '500' }}>{p.title}</div>
-                                                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>/s/{p.slug}</div>
-                                            </td>
-                                            <td>
-                                                <span className={`badge ${p.isPublished ? 'badge-success' : 'badge-neutral'}`}>
-                                                    {p.isPublished ? 'Published' : 'Draft'}
-                                                </span>
-                                            </td>
-                                            <td style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-                                                {new Date(p.createdAt).toLocaleDateString()}
-                                            </td>
-                                            <td>
-                                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                        <motion.div
+                                            key={p.id}
+                                            className="card"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            whileHover={{ y: -4 }}
+                                        >
+                                            <div style={{ position: 'relative', height: '200px', background: '#fff', overflow: 'hidden' }}>
+                                                <iframe
+                                                    srcDoc={p.content}
+                                                    style={{
+                                                        width: '200%',
+                                                        height: '200%',
+                                                        transform: 'scale(0.5)',
+                                                        transformOrigin: '0 0',
+                                                        border: 'none',
+                                                        pointerEvents: 'none'
+                                                    }}
+                                                    sandbox=""
+                                                />
+                                                <div style={{
+                                                    position: 'absolute',
+                                                    bottom: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    padding: '0.5rem',
+                                                    background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+                                                    display: 'flex',
+                                                    justifyContent: 'flex-end'
+                                                }}>
+                                                    <a
+                                                        href={`/s/${p.slug}`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        className="btn btn-primary"
+                                                        style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
+                                                    >
+                                                        Open
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div style={{ padding: '1rem' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '0.5rem' }}>
+                                                    <h3 style={{ fontWeight: 'bold', fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '60%' }}>{p.title}</h3>
+                                                    <span className={`badge badge-${p.visibility || 'private'}`}>
+                                                        {p.visibility || 'private'}
+                                                    </span>
+                                                </div>
+                                                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.25rem' }}>
+                                                    {p.owner?.username || '알 수 없음'}
+                                                </div>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.75rem', borderTop: '1px solid var(--border)', paddingTop: '0.75rem' }}>
                                                     <button onClick={() => copyToClipboard(p.slug)} className="btn btn-ghost" title="Copy Link"><Copy size={16} /></button>
                                                     <button onClick={() => { setEditingPage(p); setIsModalOpen(true); }} className="btn btn-ghost" title="Edit"><Edit size={16} /></button>
                                                     <button onClick={() => handleTogglePublish(p)} className="btn btn-ghost" title={p.isPublished ? "Unpublish" : "Publish"}>
@@ -170,85 +300,31 @@ const Dashboard = () => {
                                                     </button>
                                                     <button onClick={() => handleDelete(p.id)} className="btn btn-ghost" style={{ color: 'var(--danger)' }} title="Delete"><Trash2 size={16} /></button>
                                                 </div>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                        </motion.div>
                                     ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    ) : (
-                        <div className="grid-view">
-                            {pages.map(p => (
-                                <motion.div
-                                    key={p.id}
-                                    className="card"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    whileHover={{ y: -4 }}
-                                >
-                                    <div style={{ position: 'relative', height: '200px', background: '#fff', overflow: 'hidden' }}>
-                                        <iframe
-                                            srcDoc={p.content}
-                                            style={{
-                                                width: '200%',
-                                                height: '200%',
-                                                transform: 'scale(0.5)',
-                                                transformOrigin: '0 0',
-                                                border: 'none',
-                                                pointerEvents: 'none'
-                                            }}
-                                            sandbox=""
-                                        />
-                                        <div style={{
-                                            position: 'absolute',
-                                            bottom: 0,
-                                            left: 0,
-                                            right: 0,
-                                            padding: '0.5rem',
-                                            background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-                                            display: 'flex',
-                                            justifyContent: 'flex-end'
-                                        }}>
-                                            <a
-                                                href={`/s/${p.slug}`}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="btn btn-primary"
-                                                style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
-                                            >
-                                                <ExternalLink size={14} /> Open
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div style={{ padding: '1rem' }}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '0.5rem' }}>
-                                            <h3 style={{ fontWeight: 'bold', fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '70%' }}>{p.title}</h3>
-                                            <span className={`badge ${p.isPublished ? 'badge-success' : 'badge-neutral'}`}>
-                                                {p.isPublished ? 'Live' : 'Draft'}
-                                            </span>
-                                        </div>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem', borderTop: '1px solid var(--border)', paddingTop: '0.75rem' }}>
-                                            <button onClick={() => copyToClipboard(p.slug)} className="btn btn-ghost" title="Copy Link"><Copy size={16} /></button>
-                                            <button onClick={() => { setEditingPage(p); setIsModalOpen(true); }} className="btn btn-ghost" title="Edit"><Edit size={16} /></button>
-                                            <button onClick={() => handleTogglePublish(p)} className="btn btn-ghost" title={p.isPublished ? "Unpublish" : "Publish"}>
-                                                {p.isPublished ? <EyeOff size={16} /> : <Eye size={16} />}
-                                            </button>
-                                            <button onClick={() => handleDelete(p.id)} className="btn btn-ghost" style={{ color: 'var(--danger)' }} title="Delete"><Trash2 size={16} /></button>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
+                                </div>
+                            )}
+                        </>
                     )}
+
+                    <EditorModal
+                        isOpen={isModalOpen}
+                        onClose={() => { setIsModalOpen(false); setEditingPage(null); }}
+                        onSave={handleSave}
+                        initialData={editingPage}
+                    />
                 </>
             )}
 
-            <EditorModal
-                isOpen={isModalOpen}
-                onClose={() => { setIsModalOpen(false); setEditingPage(null); }}
-                onSave={handleSave}
-                initialData={editingPage}
-            />
+            {/* Collections Tab */}
+            {activeTab === 'collections' && <Collections />}
+
+            {/* Groups Tab (admin only) */}
+            {activeTab === 'groups' && isAdmin && <Groups />}
+
+            {/* Users Tab (admin only) */}
+            {activeTab === 'users' && isAdmin && <Users />}
         </div>
     );
 };

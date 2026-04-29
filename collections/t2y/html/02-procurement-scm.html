@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02. 조달/SCM 영역 분석 | SK에코플랜트 Hi-tech</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <h1>02. 조달/SCM 영역 분석</h1>
+      <p class="subtitle">담당: 허재경 (기계공학, 구매기획, Buyer, Expediting)</p>
+      <span class="badge">Fab 리드타임 30% 단축</span>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <div class="container">
+    <nav>
+      <ul>
+        <li><a href="00-project-overview.html">00. 프로젝트 개요</a></li>
+        <li><a href="01-design-engineering.html">01. 설계/엔지니어링</a></li>
+        <li><a href="02-procurement-scm.html" class="active">02. 조달/SCM</a></li>
+        <li><a href="03-construction.html">03. 시공/건설</a></li>
+        <li><a href="04-mep-cleanroom.html">04. MEP/클린룸</a></li>
+        <li><a href="05-commissioning.html">05. 시운전/Qual</a></li>
+        <li><a href="06-process-management.html">06. 공정관리</a></li>
+        <li><a href="07-integrated-analysis.html">07. 통합 분석</a></li>
+        <li><a href="08-aidt-initiatives.html">08. AI/DT 과제</a></li>
+        <li><a href="09-final-report.html">09. 최종 보고서</a></li>
+      </ul>
+    </nav>
+
+    <!-- 1. 영역 개요 & 스코프 -->
+    <div class="card">
+      <h2>1. 영역 개요 &amp; 스코프</h2>
+      <h3>분석 범위</h3>
+      <p>반도체 Fab 건설 프로젝트에서 장비 및 자재 조달 전 과정을 분석하여 리드타임 단축 방안을 도출한다.</p>
+      <ul style="margin: 1rem 0 1rem 1.5rem; line-height: 2;">
+        <li><strong>장비/자재 조달 리드타임:</strong> 사양 확정부터 현장 반입까지 전체 조달 사이클 관리</li>
+        <li><strong>벤더 관리:</strong> 글로벌 장비 벤더(ASML, Applied Materials, Lam Research, Tokyo Electron 등)와의 계약, 커뮤니케이션, 성과 관리</li>
+        <li><strong>물류:</strong> 해외 제작 장비의 운송, 통관, 현장 반입 전 과정의 물류 관리</li>
+        <li><strong>Expediting:</strong> 발주 이후 납기 준수 독려, 진행 현황 추적, 지연 리스크 사전 대응</li>
+      </ul>
+
+      <h3>반도체 Fab 장비의 특수성</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>특성</th>
+            <th>설명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>장납기</strong></td><td>주요 장비 리드타임 12~18개월 (리소그래피 장비 최대 24개월)</td></tr>
+          <tr><td><strong>고가</strong></td><td>단일 장비 가격 수백억~수천억 원 (EUV 리소그래피 약 2,000억 원)</td></tr>
+          <tr><td><strong>맞춤 제작</strong></td><td>Fab 레이아웃/공정 사양에 따른 커스터마이징 필수</td></tr>
+          <tr><td><strong>소수 벤더</strong></td><td>핵심 장비 벤더가 소수(독점~과점)로 교섭력 제한</td></tr>
+          <tr><td><strong>정밀 운송</strong></td><td>진동/온습도 관리가 필요한 특수 운송 조건</td></tr>
+          <tr><td><strong>설치 연계</strong></td><td>장비 반입 &rarr; 설치 &rarr; Hook-up &rarr; Qual까지 연속 프로세스</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. As-Is 프로세스 맵 -->
+    <div class="card">
+      <h2>2. As-Is 프로세스 맵 (현행 리드타임)</h2>
+
+      <h3>조달 프로세스 흐름</h3>
+      <div style="background: var(--sk-dark); color: white; border-radius: 8px; padding: 1.5rem; margin: 1rem 0; text-align: center; font-size: 0.9rem; overflow-x: auto;">
+        <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.3rem;">
+          <span style="background: var(--sk-red); padding: 0.5rem 1rem; border-radius: 4px; white-space: nowrap;">사양확정<br><small>1~2M</small></span>
+          <span>&rarr;</span>
+          <span style="background: #334155; padding: 0.5rem 1rem; border-radius: 4px; white-space: nowrap;">벤더선정<br><small>1~2M</small></span>
+          <span>&rarr;</span>
+          <span style="background: #334155; padding: 0.5rem 1rem; border-radius: 4px; white-space: nowrap;">발주(PO)<br><small>0.5M</small></span>
+          <span>&rarr;</span>
+          <span style="background: var(--sk-orange); padding: 0.5rem 1rem; border-radius: 4px; white-space: nowrap;">제작<br><small>3~12M</small></span>
+          <span>&rarr;</span>
+          <span style="background: #334155; padding: 0.5rem 1rem; border-radius: 4px; white-space: nowrap;">검수(FAT)<br><small>0.5M</small></span>
+          <span>&rarr;</span>
+          <span style="background: #334155; padding: 0.5rem 1rem; border-radius: 4px; white-space: nowrap;">운송<br><small>1~2M</small></span>
+          <span>&rarr;</span>
+          <span style="background: var(--sk-green); padding: 0.5rem 1rem; border-radius: 4px; white-space: nowrap;">현장반입<br><small>0.5M</small></span>
+        </div>
+        <p style="margin-top: 1rem; opacity: 0.8; font-size: 0.85rem;">전체 소요기간: 약 6~10개월 (주요 장납기 장비 12~18개월)</p>
+      </div>
+
+      <h3>단계별 상세 소요기간</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>단계</th>
+            <th>소요기간</th>
+            <th>주요 활동</th>
+            <th>병목 요인</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>1. 사양 확정</strong></td><td>1~2개월</td><td>공정 사양 확정, 장비 스펙 확정, 기술 검토</td><td>설계팀-공정팀 간 사양 합의 지연</td></tr>
+          <tr><td><strong>2. 벤더 선정</strong></td><td>1~2개월</td><td>RFQ 발송, 견적 비교, 기술 평가, 협상</td><td>소수 벤더로 인한 교섭 한계</td></tr>
+          <tr><td><strong>3. 발주 (PO)</strong></td><td>0.5개월</td><td>구매 승인, PO 발행, 계약 체결</td><td>다단계 승인 프로세스</td></tr>
+          <tr><td><strong>4. 제작</strong></td><td>3~12개월</td><td>벤더 제조, 중간 검사, 커스터마이징</td><td>벤더 생산 capacity, 부품 수급</td></tr>
+          <tr><td><strong>5. 검수 (FAT)</strong></td><td>0.5개월</td><td>공장 출하 검사(FAT), Punch-list 해소</td><td>검사 일정 조율, 재검사</td></tr>
+          <tr><td><strong>6. 운송</strong></td><td>1~2개월</td><td>포장, 해상/항공 운송, 통관, 내륙 운송</td><td>특수 운송 조건, 통관 지연</td></tr>
+          <tr><td><strong>7. 현장 반입</strong></td><td>0.5개월</td><td>언로딩, 클린룸 반입, 위치 배치</td><td>반입 경로 확보, 장비 간 간섭</td></tr>
+        </tbody>
+      </table>
+
+      <h3>주요 장납기 장비 현황</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>장비 유형</th>
+            <th>대표 벤더</th>
+            <th>리드타임</th>
+            <th>단가 규모</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>EUV 리소그래피</strong></td><td>ASML</td><td>18~24개월</td><td>2,000억+</td></tr>
+          <tr><td><strong>DUV 리소그래피</strong></td><td>ASML, Nikon, Canon</td><td>12~18개월</td><td>500~800억</td></tr>
+          <tr><td><strong>에칭 (Etch)</strong></td><td>Lam Research, TEL</td><td>10~14개월</td><td>100~300억</td></tr>
+          <tr><td><strong>CVD/ALD</strong></td><td>Applied Materials, TEL</td><td>8~12개월</td><td>100~200억</td></tr>
+          <tr><td><strong>PVD (스퍼터링)</strong></td><td>Applied Materials</td><td>8~12개월</td><td>80~150억</td></tr>
+          <tr><td><strong>CMP</strong></td><td>Applied Materials</td><td>6~10개월</td><td>50~100억</td></tr>
+          <tr><td><strong>세정 (Cleaning)</strong></td><td>SCREEN, TEL</td><td>6~8개월</td><td>30~80억</td></tr>
+          <tr><td><strong>검사/계측</strong></td><td>KLA, ASML(HMI)</td><td>8~12개월</td><td>100~300억</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3. Pain Point & Bottleneck -->
+    <div class="card">
+      <h2>3. Pain Point &amp; Bottleneck (Top 5)</h2>
+
+      <div class="task-card strategic">
+        <h4>PP-1. 장납기 장비(12~18개월) 조달이 전체 일정 좌우</h4>
+        <div class="meta"><span>심각도: &#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+        <ul style="margin: 0.8rem 0 0 1.5rem; line-height: 1.9; font-size: 0.9rem;">
+          <li><strong>현상:</strong> EUV/DUV 리소그래피, 에칭 등 핵심 장비의 리드타임이 12~24개월로, Fab 건설 전체 공정(24~36개월)의 크리티컬 패스를 형성</li>
+          <li><strong>영향:</strong> 장비 납기 1개월 지연 시 전체 프로젝트 일정 1개월 이상 지연 (후속 공정 연쇄 지연)</li>
+          <li><strong>근본 원인:</strong> 글로벌 장비 수요 급증(AI 반도체 투자), 벤더 생산 capacity 한계, 소수 벤더 과점 구조</li>
+        </ul>
+      </div>
+
+      <div class="task-card strategic">
+        <h4>PP-2. 사양 확정 지연으로 발주 시점 늦어짐</h4>
+        <div class="meta"><span>심각도: &#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+        <ul style="margin: 0.8rem 0 0 1.5rem; line-height: 1.9; font-size: 0.9rem;">
+          <li><strong>현상:</strong> 공정 기술팀의 장비 사양 확정이 설계 완료 이후에야 이루어져, 발주 시점이 계획 대비 1~3개월 지연</li>
+          <li><strong>영향:</strong> 발주 지연 &rarr; 납기 지연 &rarr; 설치 일정 지연의 악순환</li>
+          <li><strong>근본 원인:</strong> 설계-조달 간 정보 공유 부족, 사양 변경에 대한 리스크 회피 문화</li>
+        </ul>
+      </div>
+
+      <div class="task-card">
+        <h4>PP-3. 수작업 Expediting으로 납기 관리 부실</h4>
+        <div class="meta"><span>심각도: &#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+        <ul style="margin: 0.8rem 0 0 1.5rem; line-height: 1.9; font-size: 0.9rem;">
+          <li><strong>현상:</strong> Expediting 담당자가 이메일/전화로 벤더 진행 현황을 수작업 추적, 정보 취합에 과다 시간 소요</li>
+          <li><strong>영향:</strong> 납기 지연 사전 감지 실패, 위험 장비 조기 대응 불가, 주간 보고 작성에 과다 공수</li>
+          <li><strong>근본 원인:</strong> Expediting 전용 시스템 부재, 벤더 데이터 실시간 연동 미흡</li>
+        </ul>
+      </div>
+
+      <div class="task-card">
+        <h4>PP-4. 벤더 커뮤니케이션 비효율 (이메일/전화 기반)</h4>
+        <div class="meta"><span>심각도: &#9733;&#9733;&#9733;&#9734;&#9734;</span></div>
+        <ul style="margin: 0.8rem 0 0 1.5rem; line-height: 1.9; font-size: 0.9rem;">
+          <li><strong>현상:</strong> 벤더와의 소통이 이메일/전화 중심으로 이루어져 정보 이력 관리, 실시간 현황 파악 곤란</li>
+          <li><strong>영향:</strong> 커뮤니케이션 지연(시차, 언어 장벽), 정보 유실, 중복 문의</li>
+          <li><strong>근본 원인:</strong> 벤더 통합 포털 부재, 벤더별 시스템 상이, 보안 우려로 인한 시스템 통합 지연</li>
+        </ul>
+      </div>
+
+      <div class="task-card">
+        <h4>PP-5. 물류 최적화 미흡 (현장 반입 스케줄링)</h4>
+        <div class="meta"><span>심각도: &#9733;&#9733;&#9733;&#9734;&#9734;</span></div>
+        <ul style="margin: 0.8rem 0 0 1.5rem; line-height: 1.9; font-size: 0.9rem;">
+          <li><strong>현상:</strong> 장비 도착 시점과 현장 반입 준비(클린룸 완공, 반입 경로, 크레인 등) 간 스케줄 불일치</li>
+          <li><strong>영향:</strong> 장비 도착 후 현장 대기(야적) 발생, 반입 순서 충돌, 추가 보관 비용</li>
+          <li><strong>근본 원인:</strong> 물류-시공 간 일정 연동 부족, 반입 스케줄링의 수작업 의존</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 4. 글로벌 벤치마킹 -->
+    <div class="card">
+      <h2>4. 글로벌 벤치마킹</h2>
+
+      <div class="matrix" style="grid-template-columns: 1fr 1fr 1fr;">
+
+        <div class="matrix-cell" style="border-top: 3px solid var(--sk-red);">
+          <h4>TSMC: 선발주 체계</h4>
+          <p style="font-size: 0.88rem; margin-top: 0.5rem;"><strong>핵심 전략:</strong> 공정 기술 로드맵 기반으로 설계 확정 이전에 핵심 장비를 선발주</p>
+          <ul style="margin: 0.5rem 0 0 1.2rem; font-size: 0.85rem; line-height: 1.8;">
+            <li>장기 수요예측 기반 벤더 슬롯(Slot) 사전 확보</li>
+            <li>벤더와 장기 공급 계약(LTA) 체결</li>
+            <li>사양 미확정 시 "플랫폼 레벨" 선발주 후 커스터마이징</li>
+          </ul>
+          <p style="margin-top: 0.5rem; font-size: 0.85rem;"><span class="tag tag-high">성과: 리드타임 30~40% 단축</span></p>
+        </div>
+
+        <div class="matrix-cell" style="border-top: 3px solid var(--sk-blue);">
+          <h4>Samsung: 디지털 벤더 포털</h4>
+          <p style="font-size: 0.88rem; margin-top: 0.5rem;"><strong>핵심 전략:</strong> 자체 개발 벤더 포털(SRM 시스템)을 통한 조달 프로세스 디지털화</p>
+          <ul style="margin: 0.5rem 0 0 1.2rem; font-size: 0.85rem; line-height: 1.8;">
+            <li>벤더 등록~발주~납기관리~검수~정산 전 과정 온라인화</li>
+            <li>실시간 납기 현황 대시보드, 자동 알림</li>
+            <li>벤더 성과 평가(QCD) 자동 산출</li>
+          </ul>
+          <p style="margin-top: 0.5rem; font-size: 0.85rem;"><span class="tag tag-mid">성과: 행정 공수 40% 절감</span></p>
+        </div>
+
+        <div class="matrix-cell" style="border-top: 3px solid var(--sk-green);">
+          <h4>Intel: AI 수요예측 기반 조달 최적화</h4>
+          <p style="font-size: 0.88rem; margin-top: 0.5rem;"><strong>핵심 전략:</strong> AI/ML 모델로 장비/부품 수요를 예측하여 최적 발주 시점/수량 결정</p>
+          <ul style="margin: 0.5rem 0 0 1.2rem; font-size: 0.85rem; line-height: 1.8;">
+            <li>과거 프로젝트 데이터, 시장 동향, 벤더 capacity 통합 분석</li>
+            <li>Monte Carlo 시뮬레이션으로 수요 불확실성 반영</li>
+            <li>발주 의사결정 자동 추천 시스템</li>
+          </ul>
+          <p style="margin-top: 0.5rem; font-size: 0.85rem;"><span class="tag tag-low">성과: 긴급 발주 30% 감소</span></p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 5. 리드타임 단축 방안 -->
+    <div class="card">
+      <h2>5. 리드타임 단축 방안</h2>
+
+      <h3>5.1 재설계 (Redesign)</h3>
+      <table>
+        <thead>
+          <tr><th>개선 항목</th><th>현행</th><th>개선 후</th><th>단축 효과</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>불필요한 승인 단계 통합</td><td>구매 승인 4단계</td><td>금액 기준 차등 승인 (소액 2단계, 고액 3단계)</td><td>0.5~1개월</td></tr>
+          <tr><td>중복 기술 검토 제거</td><td>설계팀/공정팀/구매팀 각각 기술 검토</td><td>합동 기술 검토 1회 실시</td><td>0.5개월</td></tr>
+          <tr><td>불필요한 서류 간소화</td><td>발주 서류 15종</td><td>전자 서류 10종으로 통합</td><td>0.3개월</td></tr>
+        </tbody>
+      </table>
+
+      <h3>5.2 병렬화 (Parallelize)</h3>
+      <table>
+        <thead>
+          <tr><th>개선 항목</th><th>현행</th><th>개선 후</th><th>단축 효과</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>설계 확정 전 선발주 (Risk-based)</td><td>사양 100% 확정 후 발주</td><td>플랫폼 레벨 80% 확정 시 선발주</td><td>2~4개월</td></tr>
+          <tr><td>벤더 선정/사양 확정 병렬 추진</td><td>사양 확정 &rarr; 벤더 선정 순차</td><td>잠정 사양으로 RFQ 선 진행</td><td>1~2개월</td></tr>
+          <tr><td>FAT/운송 준비 병렬화</td><td>FAT 완료 &rarr; 운송 준비</td><td>FAT 중 운송 준비 병행</td><td>0.5개월</td></tr>
+        </tbody>
+      </table>
+
+      <h3>5.3 자동화 (Automate)</h3>
+      <table>
+        <thead>
+          <tr><th>개선 항목</th><th>현행</th><th>개선 후</th><th>단축 효과</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>AI 수요예측 기반 자동 발주 추천</td><td>수작업 수요 산정</td><td>AI 모델 기반 수요예측 및 발주 시점 추천</td><td>1~2개월</td></tr>
+          <tr><td>디지털 Expediting</td><td>이메일/전화 기반 수작업</td><td>자동 진행현황 수집, 지연 알림, 대시보드</td><td>0.5~1개월</td></tr>
+          <tr><td>전자 승인 워크플로우</td><td>오프라인/이메일 승인</td><td>전자결재 자동 라우팅</td><td>0.3개월</td></tr>
+        </tbody>
+      </table>
+
+      <h3>종합 단축 효과</h3>
+      <table>
+        <thead>
+          <tr><th>구분</th><th>단축 효과 (합산)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>재설계</td><td>1~1.8개월</td></tr>
+          <tr><td>병렬화</td><td>3.5~6.5개월</td></tr>
+          <tr><td>자동화</td><td>1.8~3.3개월</td></tr>
+          <tr style="font-weight: bold; background: #f0f9ff;"><td>합계 (중복 제거)</td><td>약 3~5개월 (현행 대비 30~50% 단축)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 6. AI/DT 적용 과제 -->
+    <div class="card">
+      <h2>6. AI/DT 적용 과제</h2>
+
+      <!-- 과제 1: Strategic -->
+      <div class="task-card strategic">
+        <h4>과제 1: AI 수요예측 기반 장납기 장비 선발주 시스템</h4>
+        <div class="meta">
+          <span>Impact: <span class="tag tag-high">상</span></span>
+          <span>Feasibility: <span class="tag tag-mid">중</span></span>
+          <span><span class="tag tag-strategic">Strategic</span></span>
+        </div>
+        <table style="margin-top: 0.8rem;">
+          <tbody>
+            <tr><td style="width: 160px; font-weight: 600;">예상 단축 효과</td><td>2~4개월 (장납기 장비 리드타임 사전 확보)</td></tr>
+            <tr><td style="font-weight: 600;">예산</td><td>8~12억 원 (AI 모델 개발 5억, 시스템 구축 3~5억, 데이터 정비 2억)</td></tr>
+            <tr><td style="font-weight: 600;">인력</td><td>AI 엔지니어 2명, 도메인 전문가(구매) 2명, PM 1명 = 총 5명</td></tr>
+            <tr><td style="font-weight: 600;">기간</td><td>12개월 (데이터 정비 3M &rarr; 모델 개발 4M &rarr; 시스템 구축 3M &rarr; 검증 2M)</td></tr>
+            <tr><td style="font-weight: 600;">ROI</td><td>프로젝트당 장비 조달 지연 비용 절감 약 50~100억 원 / 투자비 10억 = <strong>ROI 500~1,000%</strong></td></tr>
+            <tr><td style="font-weight: 600;">선행조건</td><td>과거 프로젝트 조달 데이터 3년치 이상 확보, 벤더 capacity 정보 공유 협약, 선발주 리스크 분담 기준 마련</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 과제 2: Quick Win -->
+      <div class="task-card quick-win">
+        <h4>과제 2: 디지털 Expediting 플랫폼</h4>
+        <div class="meta">
+          <span>Impact: <span class="tag tag-high">상</span></span>
+          <span>Feasibility: <span class="tag tag-high">상</span></span>
+          <span><span class="tag tag-quickwin">Quick Win</span></span>
+        </div>
+        <table style="margin-top: 0.8rem;">
+          <tbody>
+            <tr><td style="width: 160px; font-weight: 600;">예상 단축 효과</td><td>0.5~1개월 (납기 지연 조기 감지 및 대응)</td></tr>
+            <tr><td style="font-weight: 600;">예산</td><td>3~5억 원 (SaaS 도입 또는 자체 개발)</td></tr>
+            <tr><td style="font-weight: 600;">인력</td><td>개발자 2명, 구매 실무자 2명, PM 1명 = 총 5명</td></tr>
+            <tr><td style="font-weight: 600;">기간</td><td>6개월 (요건정의 1M &rarr; 개발/도입 3M &rarr; 테스트 1M &rarr; 롤아웃 1M)</td></tr>
+            <tr><td style="font-weight: 600;">ROI</td><td>Expediting 공수 절감 연 2억 원 + 납기 지연 방지 효과 연 10억 원 / 투자비 4억 = <strong>ROI 300%</strong></td></tr>
+            <tr><td style="font-weight: 600;">선행조건</td><td>벤더 데이터 연동 동의, 사내 ERP/구매시스템 API 확보, Expediting 업무 프로세스 표준화</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 과제 3: Quick Win -->
+      <div class="task-card quick-win">
+        <h4>과제 3: 디지털 벤더 포털 &amp; 실시간 납기 추적</h4>
+        <div class="meta">
+          <span>Impact: <span class="tag tag-mid">중</span></span>
+          <span>Feasibility: <span class="tag tag-high">상</span></span>
+          <span><span class="tag tag-quickwin">Quick Win</span></span>
+        </div>
+        <table style="margin-top: 0.8rem;">
+          <tbody>
+            <tr><td style="width: 160px; font-weight: 600;">예상 단축 효과</td><td>0.5개월 (커뮤니케이션 효율화, 행정 공수 절감)</td></tr>
+            <tr><td style="font-weight: 600;">예산</td><td>2~4억 원 (벤더 포털 SaaS 도입 또는 기존 SRM 확장)</td></tr>
+            <tr><td style="font-weight: 600;">인력</td><td>개발자 2명, 구매관리 1명, UX 디자이너 1명, PM 1명 = 총 5명</td></tr>
+            <tr><td style="font-weight: 600;">기간</td><td>5개월 (요건정의 1M &rarr; 개발 2M &rarr; 벤더 온보딩 1M &rarr; 안정화 1M)</td></tr>
+            <tr><td style="font-weight: 600;">ROI</td><td>행정 공수 절감 연 1.5억 원 + 커뮤니케이션 비용 절감 연 0.5억 원 / 투자비 3억 = <strong>ROI 67% (연간)</strong></td></tr>
+            <tr><td style="font-weight: 600;">선행조건</td><td>주요 벤더(Top 10) 참여 동의, 보안 정책 협의, 다국어(한/영/일) 지원</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 과제 4: Strategic -->
+      <div class="task-card strategic">
+        <h4>과제 4: AI 물류 최적화 (자재 반입 스케줄링)</h4>
+        <div class="meta">
+          <span>Impact: <span class="tag tag-mid">중</span></span>
+          <span>Feasibility: <span class="tag tag-mid">중</span></span>
+          <span><span class="tag tag-strategic">Strategic</span></span>
+        </div>
+        <table style="margin-top: 0.8rem;">
+          <tbody>
+            <tr><td style="width: 160px; font-weight: 600;">예상 단축 효과</td><td>0.5~1개월 (반입 대기 시간 최소화, 스케줄 충돌 방지)</td></tr>
+            <tr><td style="font-weight: 600;">예산</td><td>5~8억 원 (AI 최적화 엔진 개발 3~5억, 물류 연동 시스템 2~3억)</td></tr>
+            <tr><td style="font-weight: 600;">인력</td><td>AI 엔지니어 2명, 물류 전문가 1명, 시공 관리자 1명, PM 1명 = 총 5명</td></tr>
+            <tr><td style="font-weight: 600;">기간</td><td>10개월 (요건분석 2M &rarr; 알고리즘 개발 4M &rarr; 시스템 구축 2M &rarr; 파일럿 2M)</td></tr>
+            <tr><td style="font-weight: 600;">ROI</td><td>야적 비용 절감 연 3억 원 + 반입 지연 방지 효과 연 5억 원 / 투자비 6.5억 = <strong>ROI 123% (연간)</strong></td></tr>
+            <tr><td style="font-weight: 600;">선행조건</td><td>시공 일정 데이터 실시간 연동, 물류 파트너 시스템 API, 현장 BIM 모델과 연동</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 7. Quick Win vs Strategic 분류 요약 -->
+    <div class="card">
+      <h2>7. Quick Win vs Strategic 분류 요약</h2>
+
+      <h3>Quick Win (6개월 이내 성과)</h3>
+      <table>
+        <thead>
+          <tr><th>과제</th><th>Impact</th><th>Feasibility</th><th>예상 단축</th><th>예산</th><th>핵심 가치</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>디지털 Expediting 플랫폼</td>
+            <td><span class="tag tag-high">상</span></td>
+            <td><span class="tag tag-high">상</span></td>
+            <td>0.5~1개월</td>
+            <td>3~5억</td>
+            <td>즉시 가시적 납기 관리 개선</td>
+          </tr>
+          <tr>
+            <td>디지털 벤더 포털 &amp; 실시간 납기 추적</td>
+            <td><span class="tag tag-mid">중</span></td>
+            <td><span class="tag tag-high">상</span></td>
+            <td>0.5개월</td>
+            <td>2~4억</td>
+            <td>벤더 협업 기반 구축</td>
+          </tr>
+          <tr style="font-weight: bold; background: #f0fdf4;">
+            <td colspan="3">Quick Win 소계</td>
+            <td>1~1.5개월</td>
+            <td>5~9억 원</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Strategic (12개월 이상 투자)</h3>
+      <table>
+        <thead>
+          <tr><th>과제</th><th>Impact</th><th>Feasibility</th><th>예상 단축</th><th>예산</th><th>핵심 가치</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AI 수요예측 기반 장납기 장비 선발주 시스템</td>
+            <td><span class="tag tag-high">상</span></td>
+            <td><span class="tag tag-mid">중</span></td>
+            <td>2~4개월</td>
+            <td>8~12억</td>
+            <td>조달 패러다임 전환</td>
+          </tr>
+          <tr>
+            <td>AI 물류 최적화 (자재 반입 스케줄링)</td>
+            <td><span class="tag tag-mid">중</span></td>
+            <td><span class="tag tag-mid">중</span></td>
+            <td>0.5~1개월</td>
+            <td>5~8억</td>
+            <td>물류-시공 최적 연계</td>
+          </tr>
+          <tr style="font-weight: bold; background: #eff6ff;">
+            <td colspan="3">Strategic 소계</td>
+            <td>2.5~5개월</td>
+            <td>13~20억 원</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>실행 로드맵 (권고)</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <h4>Phase 1: 즉시 착수 (0~6개월)</h4>
+          <p class="date">디지털 Expediting 플랫폼 + 벤더 포털 구축</p>
+          <p style="font-size: 0.85rem; margin-top: 0.3rem; color: var(--text-secondary);">단축 효과 1~1.5개월 | 예산 5~9억 원</p>
+        </div>
+        <div class="timeline-item">
+          <h4>Phase 2: 중기 투자 (6~18개월)</h4>
+          <p class="date">AI 수요예측 선발주 시스템 개발 + AI 물류 최적화 착수</p>
+          <p style="font-size: 0.85rem; margin-top: 0.3rem; color: var(--text-secondary);">단축 효과 2.5~5개월 | 예산 13~20억 원</p>
+        </div>
+        <div class="timeline-item">
+          <h4>Phase 3: 장기 고도화 (18개월~)</h4>
+          <p class="date">전체 시스템 통합, AI 모델 고도화, 글로벌 벤더 네트워크 확장</p>
+          <p style="font-size: 0.85rem; margin-top: 0.3rem; color: var(--text-secondary);">지속적 개선 및 최적화</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>SK에코플랜트 Hi-tech | Fab 리드타임 30% 단축 프로젝트 | 2026</p>
+  </footer>
+
+</body>
+</html>

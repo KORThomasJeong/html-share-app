@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04. MEP/클린룸 설비 영역 분석 | T2Y 프로젝트</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <h1>04. MEP/클린룸 설비 영역 분석</h1>
+      <p class="subtitle">담당: 이민석 (하이테크 전공, 전기전자, 계장 Lead Engineer, Interface 담당)</p>
+      <span class="badge">Fab 리드타임 30% 단축</span>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <div class="container">
+    <nav>
+      <ul>
+        <li><a href="00-project-overview.html">00. 프로젝트 개요</a></li>
+        <li><a href="01-design-engineering.html">01. 설계/엔지니어링</a></li>
+        <li><a href="02-procurement-scm.html">02. 조달/SCM</a></li>
+        <li><a href="03-construction.html">03. 시공/건설</a></li>
+        <li><a href="04-mep-cleanroom.html" class="active">04. MEP/클린룸 설비</a></li>
+        <li><a href="05-commissioning.html">05. 시운전/Qualification</a></li>
+        <li><a href="06-process-management.html">06. 공정관리</a></li>
+        <li><a href="07-integrated-analysis.html">07. 통합 분석</a></li>
+        <li><a href="08-aidt-initiatives.html">08. AI/DT 과제</a></li>
+        <li><a href="09-final-report.html">09. 최종 보고서</a></li>
+      </ul>
+    </nav>
+
+    <!-- 1. 영역 개요 & 스코프 -->
+    <div class="card">
+      <h2>1. 영역 개요 &amp; 스코프</h2>
+
+      <h3>분석 범위</h3>
+      <p>MEP/클린룸 설비 영역은 반도체 Fab 건설에서 가장 복잡한 공종 간 인터페이스를 다루는 영역으로, 다음 5개 세부 분야를 포함한다.</p>
+
+      <table>
+        <thead>
+          <tr><th>세부 분야</th><th>주요 내용</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>배관(Piping)</strong></td><td>초순수(UPW), 특수가스, 케미컬, CDA, N&#8322;, 냉각수 배관</td></tr>
+          <tr><td><strong>전기(Electrical)</strong></td><td>수배전설비, UPS, 배전반, 케이블 트레이, 접지</td></tr>
+          <tr><td><strong>HVAC</strong></td><td>공조기(MAU/RAU/FFU), 덕트, 배기(Exhaust) 시스템, HEPA/ULPA 필터</td></tr>
+          <tr><td><strong>계장(Instrumentation)</strong></td><td>센서, 제어밸브, DCS/PLC, 건물자동제어(BAS), FMCS</td></tr>
+          <tr><td><strong>클린룸 구축</strong></td><td>클린룸 패널, 그레이팅, 리턴벽, FFU, 기밀 시공</td></tr>
+        </tbody>
+      </table>
+
+      <h3>반도체 Fab 특수 요구사항</h3>
+      <table>
+        <thead>
+          <tr><th>요구사항</th><th>상세 기준</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>클린룸 등급</td><td>Class 1~10 (ISO 14644-1 기준, 입자 제어)</td></tr>
+          <tr><td>초순수(UPW)</td><td>18.2M&Omega;&middot;cm 이상 저항률, TOC &lt; 1ppb</td></tr>
+          <tr><td>특수가스</td><td>독성/인화성 가스 안전 공급 (SiH&#8324;, PH&#8323;, AsH&#8323;, NF&#8323; 등)</td></tr>
+          <tr><td>배기시스템</td><td>산(Acid), 알칼리(Alkali), 유기(Organic), 독성(Toxic) 분리 배기</td></tr>
+          <tr><td>진동 제어</td><td>Sub-fab 진동 기준 VC-D~VC-E (1~0.5 &mu;m/s)</td></tr>
+          <tr><td>ESD 방지</td><td>정전기 방지 접지 및 이온화 시스템</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. As-Is 프로세스 맵 -->
+    <div class="card">
+      <h2>2. As-Is 프로세스 맵 (현행 리드타임)</h2>
+
+      <h3>주요 공정 흐름</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <h4>설비설계</h4>
+          <p class="date">3~4주 | MEP 상세설계, 배치도, 간섭검토, BIM 모델링</p>
+        </div>
+        <div class="timeline-item">
+          <h4>자재조달</h4>
+          <p class="date">4~8주 | 장비/자재 발주, 검수, 운송</p>
+        </div>
+        <div class="timeline-item">
+          <h4>배관/전기 설치</h4>
+          <p class="date">4~6주 | 배관 설치, 용접, 케이블 포설, 배전반 설치</p>
+        </div>
+        <div class="timeline-item">
+          <h4>HVAC 설치</h4>
+          <p class="date">3~5주 | 공조기 설치, 덕트 설치, 배기 시스템 구축</p>
+        </div>
+        <div class="timeline-item">
+          <h4>클린룸 구축</h4>
+          <p class="date">3~4주 | 패널 설치, FFU 설치, 기밀 시공, 환경 안정화</p>
+        </div>
+        <div class="timeline-item">
+          <h4>계장 설치</h4>
+          <p class="date">2~3주 | 센서 설치, 교정(Calibration), 루프 테스트</p>
+        </div>
+        <div class="timeline-item">
+          <h4>시스템통합 시운전</h4>
+          <p class="date">2~3주 | FMCS 통합, 시스템 연동 테스트, 성능 검증</p>
+        </div>
+      </div>
+
+      <h3>단계별 소요기간 상세</h3>
+      <table>
+        <thead>
+          <tr><th>단계</th><th>소요기간</th><th>주요 활동</th><th>선행조건</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>설비설계</td><td>3~4주</td><td>MEP 상세설계, 배치도, 간섭검토, BIM 모델링</td><td>건축설계 확정</td></tr>
+          <tr><td>자재조달</td><td>4~8주</td><td>장비/자재 발주, 검수, 운송</td><td>설계 확정</td></tr>
+          <tr><td>배관/전기 설치</td><td>4~6주</td><td>배관 설치, 용접, 케이블 포설, 배전반 설치</td><td>자재 입고, 골조 완료</td></tr>
+          <tr><td>HVAC 설치</td><td>3~5주</td><td>공조기 설치, 덕트 설치, 배기 시스템 구축</td><td>배관/전기 1차 완료</td></tr>
+          <tr><td>클린룸 구축</td><td>3~4주</td><td>패널 설치, FFU 설치, 기밀 시공, 환경 안정화</td><td>HVAC 설치 완료</td></tr>
+          <tr><td>계장 설치</td><td>2~3주</td><td>센서 설치, 교정, 루프 테스트</td><td>설비 설치 완료</td></tr>
+          <tr><td>시스템통합 시운전</td><td>2~3주</td><td>FMCS 통합, 시스템 연동, 성능 검증</td><td>전 공종 완료</td></tr>
+          <tr><td><strong>합계</strong></td><td><strong>16~24주 (4~6개월)</strong></td><td colspan="2">공종 간 인터페이스가 가장 복잡한 영역</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3. Pain Point & Bottleneck -->
+    <div class="card">
+      <h2>3. Pain Point &amp; Bottleneck (Top 5)</h2>
+
+      <div class="task-card">
+        <h4>Pain Point 1: 공종 간 간섭 (배관/전기/HVAC/계장 동시 작업 어려움)</h4>
+        <p><strong>현상:</strong> Sub-fab 및 Interstitial 공간에서 배관, 케이블 트레이, 덕트가 동일 경로 점유</p>
+        <p><strong>영향:</strong> 순차 작업 불가피 &rarr; 대기 시간 발생 (전체 리드타임의 15~20% 낭비)</p>
+        <p><strong>근본 원인:</strong> 3D 간섭 검토 부족, 시공 순서 미최적화, 실시간 진도 관리 부재</p>
+      </div>
+
+      <div class="task-card">
+        <h4>Pain Point 2: 설비 반입 시퀀스 비효율</h4>
+        <p><strong>현상:</strong> 대형 설비(공조기, 배전반 등) 반입 시 임시 개구부 필요, 반입 순서 미스매치</p>
+        <p><strong>영향:</strong> 반입 대기, 재시공, 양중 장비 재투입 &rarr; 1~2주 손실</p>
+        <p><strong>근본 원인:</strong> 설비 제작 일정과 시공 일정의 연동 부족</p>
+      </div>
+
+      <div class="task-card">
+        <h4>Pain Point 3: 클린룸 환경 유지하며 시공하는 어려움</h4>
+        <p><strong>현상:</strong> 클린룸 구축 후 후속 작업(계장, 배관 마감)으로 인한 오염</p>
+        <p><strong>영향:</strong> 재청소(Wipe-down), 파티클 카운트 재측정 &rarr; 3~5일 추가 소요</p>
+        <p><strong>근본 원인:</strong> 클린룸 구축 시점과 후속 작업의 명확한 분리 기준 부재</p>
+      </div>
+
+      <div class="task-card">
+        <h4>Pain Point 4: 계장 설치-교정-검증의 순차적 의존성</h4>
+        <p><strong>현상:</strong> 센서 설치 &rarr; 교정(Calibration) &rarr; 루프테스트 &rarr; FMCS 연동이 100% 순차적</p>
+        <p><strong>영향:</strong> 1개 루프 당 평균 4~6시간, 수백~수천 포인트 처리 시 2~3주 소요</p>
+        <p><strong>근본 원인:</strong> 수동 교정 작업, 개별 루프 단위 검증, 자동화 도구 부족</p>
+      </div>
+
+      <div class="task-card">
+        <h4>Pain Point 5: 설계 변경 시 다수 공종 동시 영향</h4>
+        <p><strong>현상:</strong> 장비 배치 변경 &rarr; 배관/전기/HVAC/계장 4개 공종 동시 재설계 필요</p>
+        <p><strong>영향:</strong> 변경 1건당 평균 3~5일 지연, 누적 시 2~4주 손실</p>
+        <p><strong>근본 원인:</strong> 공종 간 연동 설계 체계 부족, 변경 영향 분석 자동화 미비</p>
+      </div>
+    </div>
+
+    <!-- 4. 글로벌 벤치마킹 -->
+    <div class="card">
+      <h2>4. 글로벌 벤치마킹</h2>
+
+      <h3>TSMC: 프리팹 배관 모듈 적용</h3>
+      <table>
+        <thead>
+          <tr><th>항목</th><th>내용</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>적용 기술</td><td>공장 프리패브리케이션(Pre-fabrication) 배관 모듈</td></tr>
+          <tr><td>핵심 성과</td><td>현장 배관 작업 <strong>60% 감소</strong>, 용접 품질 향상</td></tr>
+          <tr><td>적용 범위</td><td>UPW, CDA, N&#8322; 배관, 특수가스 배관</td></tr>
+          <tr><td>성공 요인</td><td>표준 모듈 라이브러리 구축, BIM 기반 모듈 설계 자동화</td></tr>
+          <tr><td>시사점</td><td>현장 작업을 공장으로 이전 &rarr; 품질 향상 + 일정 단축 동시 달성</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Samsung: 디지털트윈 기반 설비 배치 최적화</h3>
+      <table>
+        <thead>
+          <tr><th>항목</th><th>내용</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>적용 기술</td><td>디지털트윈(Digital Twin) + AI 기반 MEP 배치 최적화</td></tr>
+          <tr><td>핵심 성과</td><td>설비 간섭 사전 해소율 <strong>95% 이상</strong>, 현장 재시공 <strong>70% 감소</strong></td></tr>
+          <tr><td>적용 범위</td><td>Sub-fab 전체 MEP 배치, 반입 시뮬레이션</td></tr>
+          <tr><td>성공 요인</td><td>BIM 데이터 실시간 업데이트, AI 경로 최적화 알고리즘</td></tr>
+          <tr><td>시사점</td><td>설계 단계에서 시공성 문제를 사전 해결 &rarr; Front-loading 전략</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Intel: AR/MR 기반 시공 가이드 시스템</h3>
+      <table>
+        <thead>
+          <tr><th>항목</th><th>내용</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>적용 기술</td><td>AR(증강현실)/MR(혼합현실) 시공 가이드</td></tr>
+          <tr><td>핵심 성과</td><td>시공 오류 <strong>50% 감소</strong>, 숙련공 의존도 저하, 작업 시간 <strong>20% 단축</strong></td></tr>
+          <tr><td>적용 범위</td><td>MEP 설비 설치, 배관 경로 확인, 계장 위치 가이드</td></tr>
+          <tr><td>성공 요인</td><td>BIM 모델과 현장 실시간 오버레이, 단계별 시공 지침 제공</td></tr>
+          <tr><td>시사점</td><td>숙련 인력 부족 문제 해소 + 시공 품질 균일화 가능</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 5. 리드타임 단축 방안 -->
+    <div class="card">
+      <h2>5. 리드타임 단축 방안</h2>
+
+      <h3>5.1 재설계(Redesign): 현장 제작 &rarr; 공장 프리팹 전환</h3>
+      <table>
+        <thead>
+          <tr><th>대상</th><th>현행 방식</th><th>개선 방식</th><th>예상 단축 효과</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>배관(UPW, Gas)</td><td>현장 제작/용접</td><td>공장 프리팹 모듈</td><td>현장 작업 <strong>50~60% 감소</strong></td></tr>
+          <tr><td>전기 케이블 트레이</td><td>현장 절단/조립</td><td>프리팹 유닛</td><td>현장 작업 <strong>30~40% 감소</strong></td></tr>
+          <tr><td>HVAC 덕트</td><td>현장 제작</td><td>공장 프리팹</td><td>현장 작업 <strong>40~50% 감소</strong></td></tr>
+          <tr><td>계장 패널</td><td>현장 조립/배선</td><td>공장 프리와이어링</td><td>현장 작업 <strong>60~70% 감소</strong></td></tr>
+        </tbody>
+      </table>
+
+      <h3>5.2 병렬화(Parallelize): 공종별 시퀀스 재설계</h3>
+      <table>
+        <thead>
+          <tr><th>전략</th><th>내용</th><th>예상 효과</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Zone 분할 시공</td><td>공간을 Zone으로 분할하여 Zone 간 병렬 시공</td><td>동시 작업률 향상</td></tr>
+          <tr><td>Floor 병렬화</td><td>Sub-fab / Clean Room / Interstitial 층별 동시 진행</td><td>층간 대기 제거</td></tr>
+          <tr><td>설비 선행 반입</td><td>골조 완료 즉시 대형 설비 반입 (공조기, 배전반)</td><td>반입 대기 제거</td></tr>
+          <tr><td colspan="2"><strong>병렬화 소계</strong></td><td><strong>3~4주 단축 (15~20%)</strong></td></tr>
+        </tbody>
+      </table>
+
+      <h3>5.3 자동화/가속화(Accelerate)</h3>
+      <table>
+        <thead>
+          <tr><th>기술</th><th>적용 분야</th><th>예상 효과</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>디지털트윈</td><td>MEP 배치 최적화, 간섭 검토, 반입 시뮬레이션</td><td>설계 기간 30% 단축, 재시공 70% 감소</td></tr>
+          <tr><td>AR 시공가이드</td><td>배관/전기/계장 설치 가이드</td><td>시공 시간 20% 단축, 오류 50% 감소</td></tr>
+          <tr><td>자동 계장 교정</td><td>센서 교정, 루프테스트 자동화</td><td>계장 작업 50~60% 단축</td></tr>
+          <tr><td>AI 일정 최적화</td><td>공종 간 시퀀스 최적화</td><td>대기 시간 60~70% 감소</td></tr>
+        </tbody>
+      </table>
+
+      <h3>종합 단축 효과 전망</h3>
+      <table>
+        <thead>
+          <tr><th>레버</th><th>현행 기간</th><th>단축 효과</th><th>단축 후 기간</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>프리팹 전환 (재설계)</td><td>16~24주</td><td>3~5주 단축</td><td>-</td></tr>
+          <tr><td>시퀀스 재설계 (병렬화)</td><td>-</td><td>3~4주 단축</td><td>-</td></tr>
+          <tr><td>DT/AI/자동화 (가속화)</td><td>-</td><td>2~3주 단축</td><td>-</td></tr>
+          <tr><td><strong>합계</strong></td><td><strong>16~24주</strong></td><td><strong>8~12주 단축</strong></td><td><strong>8~12주 (약 50% 단축)</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 6. AI/DT 적용 과제 -->
+    <div class="card">
+      <h2>6. AI/DT 적용 과제 (과제카드)</h2>
+
+      <!-- 과제 1 -->
+      <div class="task-card strategic">
+        <h4>과제 1: 디지털트윈 기반 MEP 배치 &amp; 시퀀스 최적화 <span class="tag tag-strategic">Strategic</span></h4>
+        <div class="meta">
+          <span><strong>Impact:</strong> <span class="tag tag-high">상</span></span>
+          <span><strong>Feasibility:</strong> <span class="tag tag-mid">중</span></span>
+          <span><strong>예상 단축:</strong> 4~6주</span>
+        </div>
+        <table>
+          <tbody>
+            <tr><td><strong>예산</strong></td><td>8~12억 원 (플랫폼 구축 + 커스터마이징)</td></tr>
+            <tr><td><strong>인력</strong></td><td>BIM 엔지니어 3명, AI/DT 개발자 2명, MEP 전문가 2명</td></tr>
+            <tr><td><strong>기간</strong></td><td>12~18개월</td></tr>
+            <tr><td><strong>ROI</strong></td><td>프로젝트 당 15~20억 원 절감 (2년 내 투자 회수)</td></tr>
+            <tr><td><strong>선행조건</strong></td><td>BIM LOD 400 이상 모델 확보, 과거 프로젝트 시공 데이터 축적</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 과제 2 -->
+      <div class="task-card strategic">
+        <h4>과제 2: AR/MR 기반 시공 가이드 시스템 <span class="tag tag-strategic">Strategic</span></h4>
+        <div class="meta">
+          <span><strong>Impact:</strong> <span class="tag tag-mid">중</span></span>
+          <span><strong>Feasibility:</strong> <span class="tag tag-mid">중</span></span>
+          <span><strong>예상 단축:</strong> 2~3주</span>
+        </div>
+        <table>
+          <tbody>
+            <tr><td><strong>예산</strong></td><td>5~8억 원 (하드웨어 + 소프트웨어 개발)</td></tr>
+            <tr><td><strong>인력</strong></td><td>AR/VR 개발자 2명, BIM 연동 엔지니어 1명, 현장 파일럿 담당 2명</td></tr>
+            <tr><td><strong>기간</strong></td><td>8~12개월</td></tr>
+            <tr><td><strong>ROI</strong></td><td>프로젝트 당 5~8억 원 절감 (숙련공 인건비 포함, 2~3년 내 회수)</td></tr>
+            <tr><td><strong>선행조건</strong></td><td>BIM 모델 실시간 연동 인프라, AR 디바이스 현장 적합성 검증</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 과제 3 -->
+      <div class="task-card quick-win">
+        <h4>과제 3: 프리팹 모듈 설계 자동화 <span class="tag tag-quickwin">Quick Win</span></h4>
+        <div class="meta">
+          <span><strong>Impact:</strong> <span class="tag tag-high">상</span></span>
+          <span><strong>Feasibility:</strong> <span class="tag tag-high">상</span></span>
+          <span><strong>예상 단축:</strong> 3~5주</span>
+        </div>
+        <table>
+          <tbody>
+            <tr><td><strong>예산</strong></td><td>3~5억 원 (설계 자동화 도구 + 모듈 표준 라이브러리)</td></tr>
+            <tr><td><strong>인력</strong></td><td>BIM 엔지니어 2명, 배관/전기 설계자 2명, 자동화 개발자 1명</td></tr>
+            <tr><td><strong>기간</strong></td><td>4~6개월</td></tr>
+            <tr><td><strong>ROI</strong></td><td>프로젝트 당 10~15억 원 절감 (현장 인력/기간 감소, 1년 내 회수)</td></tr>
+            <tr><td><strong>선행조건</strong></td><td>표준 모듈 사양 정의, 프리팹 공장 협력사 확보</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 과제 4 -->
+      <div class="task-card quick-win">
+        <h4>과제 4: AI 기반 공종 간 간섭 실시간 모니터링 <span class="tag tag-quickwin">Quick Win</span></h4>
+        <div class="meta">
+          <span><strong>Impact:</strong> <span class="tag tag-mid">중</span></span>
+          <span><strong>Feasibility:</strong> <span class="tag tag-high">상</span></span>
+          <span><strong>예상 단축:</strong> 1~2주</span>
+        </div>
+        <table>
+          <tbody>
+            <tr><td><strong>예산</strong></td><td>2~3억 원 (AI 모델 개발 + IoT 센서 + 대시보드)</td></tr>
+            <tr><td><strong>인력</strong></td><td>AI 개발자 1명, BIM 엔지니어 1명, 현장 관리자 1명</td></tr>
+            <tr><td><strong>기간</strong></td><td>3~5개월</td></tr>
+            <tr><td><strong>ROI</strong></td><td>프로젝트 당 5~8억 원 절감 (재시공 비용 절약, 1년 내 회수)</td></tr>
+            <tr><td><strong>선행조건</strong></td><td>BIM 모델 기반 간섭 검토 프로세스 구축, 현장 IoT 인프라</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 7. Quick Win vs Strategic 분류 요약 -->
+    <div class="card">
+      <h2>7. Quick Win vs Strategic 분류 요약</h2>
+
+      <div class="matrix">
+        <div class="matrix-cell" style="border-left: 4px solid var(--sk-green);">
+          <h4>Quick Win (단기 실행, 6개월 이내)</h4>
+          <table>
+            <thead>
+              <tr><th>과제</th><th>Impact</th><th>Feasibility</th><th>예상 단축</th><th>예산</th><th>기간</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>프리팹 모듈 설계 자동화</td>
+                <td><span class="tag tag-high">상</span></td>
+                <td><span class="tag tag-high">상</span></td>
+                <td>3~5주</td>
+                <td>3~5억</td>
+                <td>4~6개월</td>
+              </tr>
+              <tr>
+                <td>AI 기반 공종 간 간섭 모니터링</td>
+                <td><span class="tag tag-mid">중</span></td>
+                <td><span class="tag tag-high">상</span></td>
+                <td>1~2주</td>
+                <td>2~3억</td>
+                <td>3~5개월</td>
+              </tr>
+              <tr>
+                <td><strong>소계</strong></td>
+                <td colspan="2"></td>
+                <td><strong>4~7주</strong></td>
+                <td><strong>5~8억</strong></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="matrix-cell" style="border-left: 4px solid var(--sk-orange);">
+          <h4>Strategic (중장기, 12개월 이상)</h4>
+          <table>
+            <thead>
+              <tr><th>과제</th><th>Impact</th><th>Feasibility</th><th>예상 단축</th><th>예산</th><th>기간</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>디지털트윈 MEP 배치 최적화</td>
+                <td><span class="tag tag-high">상</span></td>
+                <td><span class="tag tag-mid">중</span></td>
+                <td>4~6주</td>
+                <td>8~12억</td>
+                <td>12~18개월</td>
+              </tr>
+              <tr>
+                <td>AR/MR 시공 가이드 시스템</td>
+                <td><span class="tag tag-mid">중</span></td>
+                <td><span class="tag tag-mid">중</span></td>
+                <td>2~3주</td>
+                <td>5~8억</td>
+                <td>8~12개월</td>
+              </tr>
+              <tr>
+                <td><strong>소계</strong></td>
+                <td colspan="2"></td>
+                <td><strong>6~9주</strong></td>
+                <td><strong>13~20억</strong></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h3>실행 로드맵</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <h4>즉시 착수 (2026 Q2)</h4>
+          <p class="date">프리팹 모듈 설계 자동화, AI 간섭 모니터링 PoC</p>
+        </div>
+        <div class="timeline-item">
+          <h4>단기 실행 (2026 Q3~Q4)</h4>
+          <p class="date">Quick Win 과제 본격 운영, Strategic 과제 기획</p>
+        </div>
+        <div class="timeline-item">
+          <h4>중기 실행 (2027 Q1~Q2)</h4>
+          <p class="date">디지털트윈 플랫폼 구축, AR 시공가이드 파일럿</p>
+        </div>
+        <div class="timeline-item">
+          <h4>확산 (2027 Q3~)</h4>
+          <p class="date">전 프로젝트 표준 적용, 지속적 개선</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.5rem; padding: 1rem; background: #f0f9ff; border-radius: 6px; border-left: 4px solid var(--sk-blue);">
+        <p><strong>총 단축 가능 기간:</strong> MEP/클린룸 설비 영역에서 <strong>8~12주 (약 2~3개월)</strong> 단축 가능</p>
+        <p>이는 전체 Fab 건설 리드타임 30% 단축 목표의 핵심 기여 영역임</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>SK에코플랜트 Hi-tech | Fab 리드타임 30% 단축 프로젝트 | 2026</p>
+  </footer>
+
+</body>
+</html>

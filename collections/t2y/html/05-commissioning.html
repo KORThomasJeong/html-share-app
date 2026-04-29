@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05. 시운전/Qualification 영역 분석 | SK에코플랜트</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <h1>05. 시운전/Qualification 영역 분석</h1>
+      <p class="subtitle">담당: 백민우 (토목공학, 인프라 DT 다수 수행 - 사이트클라우드, 터널관제 등)</p>
+      <span class="badge">Fab 리드타임 30% 단축</span>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <div class="container">
+    <nav>
+      <ul>
+        <li><a href="00-project-overview.html">00. 프로젝트 개요</a></li>
+        <li><a href="01-design-engineering.html">01. 설계/엔지니어링</a></li>
+        <li><a href="02-procurement-scm.html">02. 조달/SCM</a></li>
+        <li><a href="03-construction.html">03. 시공/건설</a></li>
+        <li><a href="04-mep-cleanroom.html">04. MEP/클린룸</a></li>
+        <li><a href="05-commissioning.html" class="active">05. 시운전/Qualification</a></li>
+        <li><a href="06-process-management.html">06. 공정관리</a></li>
+        <li><a href="07-integrated-analysis.html">07. 통합 분석</a></li>
+        <li><a href="08-aidt-initiatives.html">08. AI/DT 과제</a></li>
+        <li><a href="09-final-report.html">09. 최종 보고서</a></li>
+      </ul>
+    </nav>
+
+    <!-- 1. 영역 개요 & 스코프 -->
+    <div class="card">
+      <h2>1. 영역 개요 &amp; 스코프</h2>
+
+      <h3>분석 범위</h3>
+      <p>시운전/Qualification 영역은 Fab 건설의 최종 단계로서, 설치된 장비와 시스템이 설계 사양대로 동작하는지를 검증하고 가동 승인을 획득하는 전 과정을 포함한다.</p>
+
+      <h3>핵심 프로세스</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>프로세스</th>
+            <th>설명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Hook-up</strong></td><td>장비와 유틸리티(배관, 배선, 가스 등) 연결 작업</td></tr>
+          <tr><td><strong>Pre-commissioning</strong></td><td>개별 시스템의 사전 점검 및 기본 동작 확인</td></tr>
+          <tr><td><strong>Commissioning</strong></td><td>통합 시스템 시운전 및 성능 검증</td></tr>
+          <tr><td><strong>IQ (Installation Qualification)</strong></td><td>장비가 설계 사양대로 설치되었는지 문서화 검증</td></tr>
+          <tr><td><strong>OQ (Operational Qualification)</strong></td><td>장비가 운영 범위 내에서 정상 동작하는지 검증</td></tr>
+          <tr><td><strong>PQ (Performance Qualification)</strong></td><td>실제 생산 조건에서 일관된 성능을 달성하는지 검증</td></tr>
+          <tr><td><strong>인허가</strong></td><td>정부 규제 승인, 환경/안전 인허가 취득</td></tr>
+        </tbody>
+      </table>
+
+      <h3>반도체 Fab에서 Qualification의 중요성</h3>
+      <p>반도체 Fab에서 Qualification은 단순한 최종 검수가 아니라, <strong>반도체 수율(Yield)과 직결되는 핵심 프로세스</strong>이다.</p>
+      <ul style="margin: 0.8rem 0 0.8rem 1.5rem; line-height: 2;">
+        <li>클린룸 환경의 미세 편차가 수율에 직접적 영향을 미침</li>
+        <li>장비 Qualification 불량 시 양산 후 대규모 불량 발생 위험</li>
+        <li>Qualification 기간의 장기화는 곧 Fab 가동 지연을 의미</li>
+        <li>고객사의 Time-to-Market에 가장 직접적으로 영향을 주는 최종 관문</li>
+      </ul>
+    </div>
+
+    <!-- 2. As-Is 프로세스 맵 -->
+    <div class="card">
+      <h2>2. As-Is 프로세스 맵 (현행 리드타임)</h2>
+
+      <h3>프로세스 흐름</h3>
+      <div style="background: var(--sk-dark); color: white; padding: 1.2rem 1.5rem; border-radius: 6px; margin: 1rem 0; font-family: monospace; font-size: 0.95rem; overflow-x: auto; text-align: center; letter-spacing: 0.5px;">
+        장비설치 &rarr; Hook-up &rarr; Pre-Commissioning &rarr; Commissioning &rarr; IQ &rarr; OQ &rarr; PQ &rarr; 인허가
+      </div>
+
+      <h3>단계별 예상 소요기간</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>단계</th>
+            <th>소요기간</th>
+            <th>누적기간</th>
+            <th>주요 활동</th>
+            <th>의존성</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>장비설치 완료</td><td>-</td><td>기준점</td><td>장비 반입 및 설치 완료</td><td>시공/MEP 완료</td>
+          </tr>
+          <tr>
+            <td>Hook-up</td><td>2~3주</td><td>2~3주</td><td>유틸리티 연결, 배관/배선 체결</td><td>장비설치 완료</td>
+          </tr>
+          <tr>
+            <td>Pre-Commissioning</td><td>2~3주</td><td>4~6주</td><td>개별 시스템 점검, Leak Test, 절연 테스트</td><td>Hook-up 완료</td>
+          </tr>
+          <tr>
+            <td>Commissioning</td><td>2~4주</td><td>6~10주</td><td>통합 시운전, 성능 확인</td><td>Pre-Comm 완료</td>
+          </tr>
+          <tr>
+            <td>IQ</td><td>2~3주</td><td>8~13주</td><td>설치 적격성 문서화, 측정/기록</td><td>Commissioning 완료</td>
+          </tr>
+          <tr>
+            <td>OQ</td><td>2~3주</td><td>10~16주</td><td>운영 적격성 검증, 파라미터 테스트</td><td>IQ 완료</td>
+          </tr>
+          <tr>
+            <td>PQ</td><td>2~4주</td><td>12~20주</td><td>성능 적격성 검증, 연속 생산 테스트</td><td>OQ 완료</td>
+          </tr>
+          <tr>
+            <td>인허가</td><td>2~4주</td><td>14~24주</td><td>규제 서류 제출, 심사, 승인</td><td>PQ 완료 (일부 병행 가능)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 1rem;"><strong>전체 소요기간: 약 3~5개월 (14~24주)</strong></p>
+
+      <h3>핵심 특성</h3>
+      <ul style="margin: 0.8rem 0 0.5rem 1.5rem; line-height: 2;">
+        <li><strong>순차적 의존성이 매우 강한 영역</strong>: 앞 단계가 완료되어야 다음 단계 착수 가능</li>
+        <li><strong>문서 중심 프로세스</strong>: 각 단계별 상세 기록과 승인이 필수</li>
+        <li><strong>장비별 개별 수행</strong>: 수백~수천 대의 장비를 개별적으로 Qualification</li>
+        <li><strong>재작업 리스크</strong>: 이상 발견 시 이전 단계로 회귀하여 재검증 필요</li>
+      </ul>
+    </div>
+
+    <!-- 3. Pain Point & Bottleneck -->
+    <div class="card">
+      <h2>3. Pain Point &amp; Bottleneck (Top 5)</h2>
+
+      <div class="task-card strategic">
+        <h4>Pain Point 1: IQ/OQ/PQ 순차 진행으로 인한 긴 대기시간</h4>
+        <p style="margin-bottom: 0.5rem;">IQ &rarr; OQ &rarr; PQ가 엄격히 순차적으로 진행되어 총 6~10주 소요. 하나의 장비 Qual 지연이 전체 일정에 연쇄 영향을 미치며, 장비 간 의존성으로 인해 특정 장비 지연이 후속 장비 Qual을 차단한다.</p>
+        <div class="meta"><span><strong>영향:</strong> 전체 리드타임의 40~50%를 차지하는 핵심 병목</span></div>
+      </div>
+
+      <div class="task-card strategic">
+        <h4>Pain Point 2: 수작업 기반 문서화/보고 (종이 기반 체크리스트)</h4>
+        <p style="margin-bottom: 0.5rem;">대부분의 Qualification 기록이 종이 기반 체크리스트로 수행되며, 수기 기록의 오류 및 누락이 빈번하다. 문서 검토/승인에 추가 시간이 소요되고, 데이터의 디지털 활용이 불가능하다.</p>
+        <div class="meta"><span><strong>영향:</strong> 문서 작업에 전체 Qual 시간의 약 20~30% 소요</span></div>
+      </div>
+
+      <div class="task-card strategic">
+        <h4>Pain Point 3: 장비별 개별 Qualification으로 전체 일정 장기화</h4>
+        <p style="margin-bottom: 0.5rem;">Fab 1개 층에 수백~수천 대의 장비가 존재하며, 각 장비를 개별적으로 IQ/OQ/PQ 수행한다. 유사 장비임에도 동일한 절차를 반복하고, 장비 그룹별 통합 Qualification 방법론이 부재하다.</p>
+        <div class="meta"><span><strong>영향:</strong> 장비 수에 비례하여 일정이 선형적으로 증가</span></div>
+      </div>
+
+      <div class="task-card">
+        <h4>Pain Point 4: 이상 발생 시 원인 분석에 시간 소요</h4>
+        <p style="margin-bottom: 0.5rem;">Qualification 중 이상(Out-of-Spec) 발생 시 원인 분석에 수일~수주 소요. 과거 데이터가 디지털화되어 있지 않아 유사 사례 참조가 불가하고, 장비 간 상호 영향 분석이 어렵다.</p>
+        <div class="meta"><span><strong>영향:</strong> 이상 1건당 평균 3~5일의 추가 지연</span></div>
+      </div>
+
+      <div class="task-card">
+        <h4>Pain Point 5: 인허가 서류 준비의 복잡성</h4>
+        <p style="margin-bottom: 0.5rem;">다수의 정부 기관별 상이한 서류 양식 및 요구사항이 존재하며, Qualification 결과의 인허가 서류 형식 변환에 수작업이 소요된다. 보완 요청 시 재작성/재제출이 반복된다.</p>
+        <div class="meta"><span><strong>영향:</strong> 인허가 단계에서 2~4주의 추가 지연 가능</span></div>
+      </div>
+    </div>
+
+    <!-- 4. 글로벌 벤치마킹 -->
+    <div class="card">
+      <h2>4. 글로벌 벤치마킹</h2>
+
+      <div class="matrix" style="grid-template-columns: 1fr 1fr 1fr;">
+        <div class="matrix-cell" style="border-top: 3px solid var(--sk-red);">
+          <h4>TSMC</h4>
+          <p style="font-weight: 600; margin-bottom: 0.5rem;">디지털 Commissioning 플랫폼 (페이퍼리스)</p>
+          <ul style="margin-left: 1rem; font-size: 0.88rem; line-height: 1.8;">
+            <li>태블릿/모바일 기반 현장 데이터 입력</li>
+            <li>실시간 대시보드 전체 Qual 모니터링</li>
+            <li>전자 서명 및 자동 문서 생성</li>
+            <li>Qual 데이터 자동 아카이빙</li>
+          </ul>
+          <p style="margin-top: 0.8rem; font-size: 0.85rem; color: var(--sk-green); font-weight: 600;">성과: 문서 작업 60% 감소, Qual 기간 15~20% 단축</p>
+        </div>
+        <div class="matrix-cell" style="border-top: 3px solid var(--sk-blue);">
+          <h4>Samsung</h4>
+          <p style="font-weight: 600; margin-bottom: 0.5rem;">AI 기반 이상탐지로 Qual 재작업 감소</p>
+          <ul style="margin-left: 1rem; font-size: 0.88rem; line-height: 1.8;">
+            <li>실시간 이상탐지 Out-of-Spec 조기 발견</li>
+            <li>과거 데이터 학습 이상 원인 자동 분류</li>
+            <li>유사 사례 기반 조치 방안 추천</li>
+            <li>예방적 조치로 재작업 발생률 감소</li>
+          </ul>
+          <p style="margin-top: 0.8rem; font-size: 0.85rem; color: var(--sk-green); font-weight: 600;">성과: 재작업률 40% 감소, 이상 분석 70% 단축</p>
+        </div>
+        <div class="matrix-cell" style="border-top: 3px solid var(--sk-orange);">
+          <h4>Intel</h4>
+          <p style="font-weight: 600; margin-bottom: 0.5rem;">Qualification 프로세스 병렬화</p>
+          <ul style="margin-left: 1rem; font-size: 0.88rem; line-height: 1.8;">
+            <li>장비 유형별 그룹 분류</li>
+            <li>대표 장비 Full Qual + 나머지 간소화</li>
+            <li>Zone별 병렬 Commissioning</li>
+            <li>통계적 샘플링 기법 적용</li>
+          </ul>
+          <p style="margin-top: 0.8rem; font-size: 0.85rem; color: var(--sk-green); font-weight: 600;">성과: Qual 기간 25~35% 단축, 인력 20% 절감</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. 리드타임 단축 방안 -->
+    <div class="card">
+      <h2>5. 리드타임 단축 방안</h2>
+
+      <h3>5.1 재설계 (Redesign)</h3>
+      <table>
+        <thead>
+          <tr><th>항목</th><th>현행</th><th>개선안</th><th>예상 단축효과</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>종이 기반 문서화</td><td>수기 체크리스트, 회람 서명</td><td>페이퍼리스 전환 (전자 문서/서명)</td><td>문서 작업 60% 감소</td></tr>
+          <tr><td>중복 검증 절차</td><td>IQ/OQ 간 유사 항목 중복 검증</td><td>중복 검증 항목 통합</td><td>검증 시간 15% 감소</td></tr>
+          <tr><td>수동 데이터 전사</td><td>측정값 수기 기록 후 시스템 입력</td><td>센서 데이터 자동 수집/입력</td><td>데이터 입력 시간 80% 감소</td></tr>
+        </tbody>
+      </table>
+
+      <h3>5.2 병렬화 (Parallelize)</h3>
+      <table>
+        <thead>
+          <tr><th>항목</th><th>현행</th><th>개선안</th><th>예상 단축효과</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>장비별 순차 Qual</td><td>개별 장비 순차 IQ/OQ/PQ</td><td>장비 그룹별 동시 Qual 수행</td><td>Qual 기간 25~30% 단축</td></tr>
+          <tr><td>Commissioning 후 Qual</td><td>Commissioning 완전 완료 후 Qual 착수</td><td>선행 Commissioning + 조기 Qual 착수</td><td>2~3주 단축</td></tr>
+          <tr><td>인허가 순차 진행</td><td>PQ 완료 후 인허가 서류 준비</td><td>PQ 진행 중 인허가 서류 병행 준비</td><td>1~2주 단축</td></tr>
+        </tbody>
+      </table>
+
+      <h3>5.3 자동화/가속화 (Accelerate)</h3>
+      <table>
+        <thead>
+          <tr><th>항목</th><th>현행</th><th>개선안</th><th>예상 단축효과</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>수동 Commissioning 관리</td><td>엑셀/종이 기반 진행 관리</td><td>디지털 Commissioning 플랫폼</td><td>관리 효율 50% 향상</td></tr>
+          <tr><td>수동 이상 분석</td><td>경험 기반 수동 원인 분석</td><td>AI 기반 이상탐지 &amp; 원인 분석</td><td>분석 시간 70% 단축</td></tr>
+          <tr><td>인허가 서류 수작업</td><td>Qual 결과 수동 변환</td><td>자동 서류 생성 및 제출</td><td>서류 준비 50% 단축</td></tr>
+        </tbody>
+      </table>
+
+      <h3>종합 예상 단축효과</h3>
+      <div class="matrix">
+        <div class="matrix-cell" style="text-align: center;">
+          <h4>현행 리드타임</h4>
+          <p style="font-size: 1.8rem; font-weight: 700; color: var(--sk-red);">3~5개월</p>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">14~24주</p>
+        </div>
+        <div class="matrix-cell" style="text-align: center;">
+          <h4>목표 리드타임</h4>
+          <p style="font-size: 1.8rem; font-weight: 700; color: var(--sk-green);">2~3.5개월</p>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">10~17주 (25~35% 단축)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. AI/DT 적용 과제 -->
+    <div class="card">
+      <h2>6. AI/DT 적용 과제</h2>
+
+      <!-- 과제 1 -->
+      <div class="task-card quick-win">
+        <h4>과제 1: 디지털 Commissioning 플랫폼 구축 <span class="tag tag-quickwin">Quick Win</span></h4>
+        <p style="margin: 0.5rem 0 0.8rem;">Hook-up부터 PQ까지 전 과정을 디지털로 관리하는 통합 플랫폼. 태블릿 기반 현장 데이터 입력, 전자 서명, 실시간 진행 현황 대시보드, 자동 문서 생성 기능을 포함한다. 기존 사이트클라우드 등 인프라 DT 경험을 활용하여 빠른 구축이 가능하다.</p>
+        <table style="font-size: 0.85rem;">
+          <tbody>
+            <tr><td style="width: 140px; font-weight: 600;">Impact</td><td><span class="tag tag-high">상</span></td><td style="width: 140px; font-weight: 600;">Feasibility</td><td><span class="tag tag-high">상</span></td></tr>
+            <tr><td style="font-weight: 600;">예상 단축효과</td><td colspan="3">전체 Qual 기간 15~20% 단축 (3~4주)</td></tr>
+            <tr><td style="font-weight: 600;">예산</td><td>3~5억 원</td><td style="font-weight: 600;">기간</td><td>6~8개월</td></tr>
+            <tr><td style="font-weight: 600;">인력</td><td colspan="3">PM 1명, 개발 3명, 현장지원 2명</td></tr>
+            <tr><td style="font-weight: 600;">ROI</td><td colspan="3">프로젝트당 인건비 절감 2~3억 원, 일정 단축에 따른 기회비용 회수</td></tr>
+            <tr><td style="font-weight: 600;">선행조건</td><td colspan="3">현행 체크리스트/양식 디지털 표준화, 현장 Wi-Fi/네트워크 인프라</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 과제 2 -->
+      <div class="task-card strategic">
+        <h4>과제 2: AI 기반 Qualification 이상탐지 &amp; 예측 분석 시스템 <span class="tag tag-strategic">Strategic</span></h4>
+        <p style="margin: 0.5rem 0 0.8rem;">Qualification 과정에서 수집되는 센서 데이터, 측정값, 환경 데이터에 ML 모델을 적용하여 이상 징후를 조기에 탐지하고, 과거 사례 학습을 통해 원인을 자동 분류한다. 시간이 지남에 따라 예측 정확도가 향상되는 학습형 시스템이다.</p>
+        <table style="font-size: 0.85rem;">
+          <tbody>
+            <tr><td style="width: 140px; font-weight: 600;">Impact</td><td><span class="tag tag-high">상</span></td><td style="width: 140px; font-weight: 600;">Feasibility</td><td><span class="tag tag-mid">중</span></td></tr>
+            <tr><td style="font-weight: 600;">예상 단축효과</td><td colspan="3">재작업 40% 감소, 이상 분석 시간 70% 단축 (1~2주)</td></tr>
+            <tr><td style="font-weight: 600;">예산</td><td>5~8억 원</td><td style="font-weight: 600;">기간</td><td>12~18개월</td></tr>
+            <tr><td style="font-weight: 600;">인력</td><td colspan="3">PM 1명, AI/ML 엔지니어 2명, 도메인 전문가 2명, 데이터 엔지니어 1명</td></tr>
+            <tr><td style="font-weight: 600;">ROI</td><td colspan="3">재작업 감소에 따른 비용 절감 연 3~5억 원, 품질 향상 효과</td></tr>
+            <tr><td style="font-weight: 600;">선행조건</td><td colspan="3">디지털 Commissioning 플랫폼 구축 (데이터 수집 인프라), 최소 2~3개 프로젝트 데이터 축적</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 과제 3 -->
+      <div class="task-card quick-win">
+        <h4>과제 3: IQ/OQ/PQ 프로세스 디지털 자동화 <span class="tag tag-quickwin">Quick Win</span></h4>
+        <p style="margin: 0.5rem 0 0.8rem;">IQ/OQ/PQ 각 단계의 검증 항목을 디지털 워크플로우로 자동화한다. 센서 데이터 자동 수집, Pass/Fail 자동 판정, 장비 그룹별 일괄 처리 기능을 제공하여 검증 절차를 대폭 간소화한다.</p>
+        <table style="font-size: 0.85rem;">
+          <tbody>
+            <tr><td style="width: 140px; font-weight: 600;">Impact</td><td><span class="tag tag-mid">중</span></td><td style="width: 140px; font-weight: 600;">Feasibility</td><td><span class="tag tag-high">상</span></td></tr>
+            <tr><td style="font-weight: 600;">예상 단축효과</td><td colspan="3">Qual 검증 시간 20~25% 단축 (2~3주)</td></tr>
+            <tr><td style="font-weight: 600;">예산</td><td>2~4억 원</td><td style="font-weight: 600;">기간</td><td>4~6개월</td></tr>
+            <tr><td style="font-weight: 600;">인력</td><td colspan="3">PM 1명, 개발 2명, Qual 전문가 1명</td></tr>
+            <tr><td style="font-weight: 600;">ROI</td><td colspan="3">인력 효율화 연 1~2억 원, 문서 오류 감소에 따른 재작업 비용 절감</td></tr>
+            <tr><td style="font-weight: 600;">선행조건</td><td colspan="3">IQ/OQ/PQ 체크리스트 표준화, 장비별 Qual 기준 데이터베이스 구축</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 과제 4 -->
+      <div class="task-card strategic">
+        <h4>과제 4: Predictive Analytics 기반 설비 고장예측 시스템 <span class="tag tag-strategic">Strategic</span></h4>
+        <p style="margin: 0.5rem 0 0.8rem;">Commissioning 및 Qualification 단계에서 수집된 데이터와 양산 운영 데이터를 결합하여, 설비 고장을 사전에 예측하는 시스템이다. 진동, 온도, 전력 소비 등의 패턴 분석을 통해 고장 징후를 조기에 감지하고 예방 정비를 실행한다.</p>
+        <table style="font-size: 0.85rem;">
+          <tbody>
+            <tr><td style="width: 140px; font-weight: 600;">Impact</td><td><span class="tag tag-mid">중</span></td><td style="width: 140px; font-weight: 600;">Feasibility</td><td><span class="tag tag-low">하</span></td></tr>
+            <tr><td style="font-weight: 600;">예상 단축효과</td><td colspan="3">예방 정비로 비계획 정지 50% 감소 (간접 효과 1~2주)</td></tr>
+            <tr><td style="font-weight: 600;">예산</td><td>8~12억 원</td><td style="font-weight: 600;">기간</td><td>18~24개월</td></tr>
+            <tr><td style="font-weight: 600;">인력</td><td colspan="3">PM 1명, AI/ML 엔지니어 3명, 설비 전문가 2명, 데이터 엔지니어 2명</td></tr>
+            <tr><td style="font-weight: 600;">ROI</td><td colspan="3">비계획 정지 감소 연 5~10억 원 (양산 단계 포함), 장기적 설비 수명 연장 효과</td></tr>
+            <tr><td style="font-weight: 600;">선행조건</td><td colspan="3">IoT 센서 인프라 구축, 최소 1년 이상의 설비 운영 데이터, AI 이상탐지 시스템 선행 구축</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 7. Quick Win vs Strategic 분류 요약 -->
+    <div class="card">
+      <h2>7. Quick Win vs Strategic 분류 요약</h2>
+
+      <h3>Quick Win (빠른 성과)</h3>
+      <table>
+        <thead>
+          <tr><th>과제</th><th>Impact</th><th>Feasibility</th><th>기간</th><th>예산</th><th>핵심 가치</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>디지털 Commissioning 플랫폼</td>
+            <td><span class="tag tag-high">상</span></td>
+            <td><span class="tag tag-high">상</span></td>
+            <td>6~8개월</td>
+            <td>3~5억</td>
+            <td>즉시 체감 가능한 효율 개선</td>
+          </tr>
+          <tr>
+            <td>IQ/OQ/PQ 프로세스 자동화</td>
+            <td><span class="tag tag-mid">중</span></td>
+            <td><span class="tag tag-high">상</span></td>
+            <td>4~6개월</td>
+            <td>2~4억</td>
+            <td>검증 절차 간소화</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);">공통 특징: 높은 실현 가능성, 단기간 내 구현 가능, 기존 기술/경험 활용<br>권장 실행 순서: IQ/OQ/PQ 자동화 &rarr; 디지털 Commissioning 플랫폼 (또는 동시 추진)</p>
+
+      <h3>Strategic (전략적 과제)</h3>
+      <table>
+        <thead>
+          <tr><th>과제</th><th>Impact</th><th>Feasibility</th><th>기간</th><th>예산</th><th>핵심 가치</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AI 기반 이상탐지 &amp; 예측 분석</td>
+            <td><span class="tag tag-high">상</span></td>
+            <td><span class="tag tag-mid">중</span></td>
+            <td>12~18개월</td>
+            <td>5~8억</td>
+            <td>재작업 감소, 품질 향상</td>
+          </tr>
+          <tr>
+            <td>Predictive Analytics 설비 고장예측</td>
+            <td><span class="tag tag-mid">중</span></td>
+            <td><span class="tag tag-low">하</span></td>
+            <td>18~24개월</td>
+            <td>8~12억</td>
+            <td>장기적 설비 가용성 극대화</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);">공통 특징: 높은 임팩트, 중장기 투자 필요, 데이터 축적이 핵심 선행조건<br>권장 실행 순서: AI 이상탐지 &rarr; Predictive Analytics (데이터/인프라 연속 활용)</p>
+
+      <h3>전체 로드맵</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <h4>2026 H2</h4>
+          <p>IQ/OQ/PQ 프로세스 자동화 (Quick Win)</p>
+          <p class="date">4~6개월 | 2~4억 원</p>
+        </div>
+        <div class="timeline-item">
+          <h4>2026 H2</h4>
+          <p>디지털 Commissioning 플랫폼 구축 (Quick Win)</p>
+          <p class="date">6~8개월 | 3~5억 원</p>
+        </div>
+        <div class="timeline-item">
+          <h4>2027 H1</h4>
+          <p>AI 기반 이상탐지 &amp; 예측 분석 착수 (Strategic)</p>
+          <p class="date">12~18개월 | 5~8억 원</p>
+        </div>
+        <div class="timeline-item">
+          <h4>2027 H2 ~ 2028</h4>
+          <p>Predictive Analytics 설비 고장예측 (Strategic)</p>
+          <p class="date">18~24개월 | 8~12억 원</p>
+        </div>
+      </div>
+
+      <div class="matrix" style="margin-top: 1.5rem;">
+        <div class="matrix-cell" style="text-align: center;">
+          <h4>총 예상 투자</h4>
+          <p style="font-size: 1.5rem; font-weight: 700; color: var(--sk-blue);">18~29억 원</p>
+        </div>
+        <div class="matrix-cell" style="text-align: center;">
+          <h4>총 예상 단축효과</h4>
+          <p style="font-size: 1.5rem; font-weight: 700; color: var(--sk-green);">25~35% 단축</p>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">현행 대비 4~7주</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>SK에코플랜트 Hi-tech | Fab 리드타임 30% 단축 프로젝트 | 2026</p>
+  </footer>
+
+</body>
+</html>

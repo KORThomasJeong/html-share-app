@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>07. 통합 분석 & 크리티컬 패스 | SK에코플랜트 T2Y</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .process-flow {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      flex-wrap: wrap;
+      margin: 1rem 0;
+    }
+    .process-step {
+      background: var(--sk-dark);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      min-width: 100px;
+    }
+    .process-step.critical {
+      background: var(--sk-red);
+      box-shadow: 0 2px 8px rgba(234,0,44,0.3);
+    }
+    .process-arrow {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      font-weight: bold;
+    }
+    .scenario-card {
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      background: #fafbfc;
+    }
+    .scenario-card.target {
+      border-color: var(--sk-red);
+      background: #fff5f5;
+    }
+    .scenario-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .scenario-card .pct {
+      display: inline-block;
+      background: var(--sk-dark);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+    .scenario-card.target .pct {
+      background: var(--sk-red);
+    }
+    .lever-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .lever-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem;
+      background: white;
+      border-top: 3px solid var(--sk-blue);
+    }
+    .lever-item h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+      color: var(--sk-dark);
+    }
+    .lever-item ul {
+      margin-left: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .lever-item ul li {
+      margin-bottom: 0.3rem;
+    }
+    .overlap-bar {
+      display: flex;
+      align-items: center;
+      margin: 0.5rem 0;
+    }
+    .overlap-bar .label {
+      min-width: 140px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .overlap-bar .bar {
+      flex: 1;
+      height: 24px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+    .overlap-bar .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+      font-size: 0.75rem;
+      color: white;
+      font-weight: 600;
+    }
+    .dependency-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .highlight-box {
+      background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
+      border-left: 4px solid var(--sk-red);
+      padding: 1rem 1.5rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    .highlight-box strong {
+      color: var(--sk-red);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <span class="badge">Phase 2 — 심층분석</span>
+    <h1>07. 통합 분석 &amp; 크리티컬 패스</h1>
+    <p class="subtitle">5대 영역 상호 의존성 분석 및 전체 Fab 건설 크리티컬 패스 식별</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Navigation -->
+  <nav>
+    <ul>
+      <li><a href="00-project-overview.html">00. 프로젝트 개요</a></li>
+      <li><a href="01-design-engineering.html">01. 설계/엔지니어링</a></li>
+      <li><a href="02-procurement-scm.html">02. 조달/SCM</a></li>
+      <li><a href="03-construction.html">03. 시공/건설</a></li>
+      <li><a href="04-mep-cleanroom.html">04. MEP/클린룸</a></li>
+      <li><a href="05-commissioning.html">05. 시운전/Qual</a></li>
+      <li><a href="06-process-management.html">06. 공정관리</a></li>
+      <li><a href="07-integrated-analysis.html" class="active">07. 통합 분석</a></li>
+      <li><a href="08-aidt-initiatives.html">08. AI/DT 과제</a></li>
+      <li><a href="09-final-report.html">09. 최종 보고서</a></li>
+    </ul>
+  </nav>
+
+  <!-- 1. 통합 분석 개요 -->
+  <div class="card">
+    <h2>1. 통합 분석 개요</h2>
+
+    <h3>5대 영역 상호 의존성</h3>
+    <table class="dependency-table">
+      <thead>
+        <tr><th>영역</th><th>주요 후행 영역</th><th>상호 의존성</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>설계/엔지니어링</td><td>조달, 시공, MEP</td><td>설계 확정이 모든 후행 공정의 시작 조건</td></tr>
+        <tr><td>조달/SCM</td><td>시공, MEP, 시운전</td><td>자재/장비 납품이 현장 작업 가능 시점 결정</td></tr>
+        <tr><td>시공/건설</td><td>MEP, 시운전</td><td>구조물 완성이 설비 설치의 전제 조건</td></tr>
+        <tr><td>MEP/클린룸 설비</td><td>시운전</td><td>설비 설치 완료가 Qualification 시작 조건</td></tr>
+        <tr><td>시운전/Qual</td><td>—(최종 산출물)</td><td>Fab 가동 Ready 판정</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      <strong>크리티컬 패스:</strong> 프로젝트 전체 공기를 결정하는 가장 긴 경로. 전체 공정의 약 35~40%가 크리티컬 패스 상에 존재하며, 집중 최적화 시 <strong>30~35% 단축</strong> 가능
+    </div>
+  </div>
+
+  <!-- 2. 전체 Fab 건설 프로세스 맵 -->
+  <div class="card">
+    <h2>2. 전체 Fab 건설 프로세스 맵</h2>
+
+    <h3>설계 → 조달 → 시공 → MEP → 시운전 전체 흐름</h3>
+    <div class="process-flow">
+      <div class="process-step critical">기본설계<br><small>3~4개월</small></div>
+      <span class="process-arrow">→</span>
+      <div class="process-step critical">상세설계<br><small>3~5개월</small></div>
+      <span class="process-arrow">→</span>
+      <div class="process-step critical">장비 선발주<br><small>BD 완료 시</small></div>
+      <span class="process-arrow">→</span>
+      <div class="process-step critical">장비 제작/납품<br><small>12~18개월</small></div>
+      <span class="process-arrow">→</span>
+      <div class="process-step critical">골조 시공<br><small>4~5개월</small></div>
+      <span class="process-arrow">→</span>
+      <div class="process-step critical">MEP 설치<br><small>3~4개월</small></div>
+      <span class="process-arrow">→</span>
+      <div class="process-step critical">클린룸 구축<br><small>3~4개월</small></div>
+      <span class="process-arrow">→</span>
+      <div class="process-step critical">Commissioning<br><small>2~3개월</small></div>
+      <span class="process-arrow">→</span>
+      <div class="process-step critical">Qualification<br><small>2~4개월</small></div>
+    </div>
+
+    <h3>영역 간 오버랩 가능 구간 및 예상 단축</h3>
+    <div style="margin: 1rem 0;">
+      <div class="overlap-bar">
+        <span class="label">설계 → 조달</span>
+        <div class="bar"><div class="bar-fill" style="width:30%; background:var(--sk-blue);">2~3개월</div></div>
+      </div>
+      <div class="overlap-bar">
+        <span class="label">설계 → 시공</span>
+        <div class="bar"><div class="bar-fill" style="width:20%; background:var(--sk-green);">1~2개월</div></div>
+      </div>
+      <div class="overlap-bar">
+        <span class="label">시공 → MEP</span>
+        <div class="bar"><div class="bar-fill" style="width:30%; background:var(--sk-orange);">2~3개월</div></div>
+      </div>
+      <div class="overlap-bar">
+        <span class="label">MEP → 시운전</span>
+        <div class="bar"><div class="bar-fill" style="width:20%; background:var(--sk-red);">1~2개월</div></div>
+      </div>
+      <div class="overlap-bar">
+        <span class="label" style="font-weight:700; color:var(--sk-red);">합계 단축</span>
+        <div class="bar"><div class="bar-fill" style="width:60%; background:var(--sk-red);">6~10개월 단축 가능</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 영역 간 연계 분석 -->
+  <div class="card">
+    <h2>3. 영역 간 연계 분석</h2>
+
+    <div class="lever-grid">
+      <div class="lever-item">
+        <h4>설계-조달 연계</h4>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">설계 확정 → 발주 (선발주로 병렬화)</p>
+        <ul>
+          <li>BD 70% 시점에서 장기 리드타임 장비 선발주</li>
+          <li>Rolling Wave 방식으로 설계-조달 동시공학</li>
+          <li>표준사양서 활용 → 설계 확정 전 견적/협상 선행</li>
+        </ul>
+        <p style="margin-top:0.5rem;"><span class="tag tag-high">단축 2~3개월</span></p>
+      </div>
+      <div class="lever-item">
+        <h4>설계-시공 연계</h4>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">BIM → 시공도면 (자동화)</p>
+        <ul>
+          <li>BIM-to-CD 자동 생성 (AI 기반)</li>
+          <li>4D BIM으로 시공 순서 최적화</li>
+          <li>AI Clash Detection으로 사전 간섭 해결</li>
+        </ul>
+        <p style="margin-top:0.5rem;"><span class="tag tag-mid">단축 1~2개월</span></p>
+      </div>
+      <div class="lever-item">
+        <h4>시공-MEP 연계</h4>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">구조물-설비 동시 시공 가능 구간</p>
+        <ul>
+          <li>층별/구역별 골조 완료 즉시 MEP 선행 설치</li>
+          <li>프리팹 MEP 모듈 현장 외 사전 제작</li>
+          <li>시공-MEP 통합 일정 관리</li>
+        </ul>
+        <p style="margin-top:0.5rem;"><span class="tag tag-high">단축 2~3개월</span></p>
+      </div>
+      <div class="lever-item">
+        <h4>MEP-시운전 연계</h4>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">설비 완료 → Qual 시작 (선행 Commissioning)</p>
+        <ul>
+          <li>유틸리티 계통별 완료 시 즉시 시운전 착수</li>
+          <li>Qual 프로토콜 사전 준비 (설비 설치와 병행)</li>
+          <li>디지털트윈 기반 가상 Commissioning</li>
+        </ul>
+        <p style="margin-top:0.5rem;"><span class="tag tag-mid">단축 1~2개월</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 통합 리드타임 단축 시나리오 -->
+  <div class="card">
+    <h2>4. 통합 리드타임 단축 시나리오</h2>
+
+    <div class="scenario-card">
+      <h3>Scenario A (보수적) <span class="pct">25% 단축</span></h3>
+      <p style="font-size:0.9rem; color:var(--text-secondary); margin: 0.5rem 0;">각 영역 20% 개별 단축 → 전체 약 25% 단축</p>
+      <table>
+        <thead><tr><th>영역</th><th>현행</th><th>단축 후</th><th>단축 기간</th></tr></thead>
+        <tbody>
+          <tr><td>설계/엔지니어링</td><td>8개월</td><td>6.4개월</td><td>1.6개월</td></tr>
+          <tr><td>조달/SCM</td><td>12개월</td><td>9.6개월</td><td>2.4개월</td></tr>
+          <tr><td>시공/건설</td><td>12개월</td><td>9.6개월</td><td>2.4개월</td></tr>
+          <tr><td>MEP/클린룸</td><td>10개월</td><td>8개월</td><td>2개월</td></tr>
+          <tr><td>시운전/Qual</td><td>5개월</td><td>4개월</td><td>1개월</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.85rem; margin-top:0.5rem;"><strong>리스크:</strong> 낮음 (검증된 방법론 적용)</p>
+    </div>
+
+    <div class="scenario-card target">
+      <h3>Scenario B (목표) <span class="pct">30% 단축</span></h3>
+      <p style="font-size:0.9rem; color:var(--text-secondary); margin: 0.5rem 0;">크리티컬 패스 집중 + 병렬화 → 전체 30% 단축</p>
+      <table>
+        <thead><tr><th>단축 레버</th><th>단축 효과</th><th>적용 대상</th></tr></thead>
+        <tbody>
+          <tr><td>크리티컬 패스 최적화</td><td>3~4개월</td><td>장기 리드타임 장비 선발주, 골조-MEP 동시 시공</td></tr>
+          <tr><td>영역 간 병렬화</td><td>3~4개월</td><td>설계-조달 CE, 구역별 선행 Commissioning</td></tr>
+          <tr><td>AI/DT 자동화</td><td>1~2개월</td><td>BIM 자동화, AI 기반 의사결정</td></tr>
+          <tr><td>프로세스 제거</td><td>1~2개월</td><td>불필요한 승인 단계, 중복 검토 제거</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.85rem; margin-top:0.5rem;"><strong>전체:</strong> 30개월 → <strong style="color:var(--sk-red);">21개월</strong> | <strong>리스크:</strong> 중간</p>
+    </div>
+
+    <div class="scenario-card">
+      <h3>Scenario C (공격적) <span class="pct">35%+ 단축</span></h3>
+      <p style="font-size:0.9rem; color:var(--text-secondary); margin: 0.5rem 0;">AI/DT 전면 적용 → 전체 35%+ 단축</p>
+      <table>
+        <thead><tr><th>단축 레버</th><th>단축 효과</th><th>적용 대상</th></tr></thead>
+        <tbody>
+          <tr><td>AI/DT 전면 적용</td><td>4~5개월</td><td>설계 자동화, 디지털트윈, AI 스케줄링</td></tr>
+          <tr><td>모듈러 건설 확대</td><td>3~4개월</td><td>구조물+MEP 통합 모듈, 오프사이트 제작</td></tr>
+          <tr><td>고급 병렬화</td><td>2~3개월</td><td>Fast-track + 동시공학 전면 도입</td></tr>
+          <tr><td>프로세스 재설계</td><td>1~2개월</td><td>BPR 수준의 프로세스 혁신</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.85rem; margin-top:0.5rem;"><strong>전체:</strong> 30개월 → <strong style="color:var(--sk-red);">19.5개월</strong> | <strong>리스크:</strong> 높음 (대규모 투자 필요)</p>
+    </div>
+  </div>
+
+  <!-- 5. Cross-cutting 단축 레버 -->
+  <div class="card">
+    <h2>5. Cross-cutting 단축 레버</h2>
+
+    <h3>5.1 모듈러/프리팹 확대</h3>
+    <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:1rem;">설계+시공+MEP 3개 영역에 동시 영향을 미치는 가장 강력한 Cross-cutting 레버</p>
+    <table>
+      <thead><tr><th>항목</th><th>현행</th><th>모듈러 적용 시</th></tr></thead>
+      <tbody>
+        <tr><td>설계</td><td>현장 중심 설계</td><td>DfMA 기반 설계</td></tr>
+        <tr><td>시공</td><td>현장 순차 시공</td><td>오프사이트 사전 제작 + 현장 조립</td></tr>
+        <tr><td>MEP</td><td>현장 개별 설치</td><td>유틸리티 모듈 사전 제작, Plug &amp; Play</td></tr>
+      </tbody>
+    </table>
+    <div class="highlight-box">
+      <strong>핵심 모듈화 대상:</strong> 클린룸 천장 모듈, 유틸리티 배관 랙 모듈, 전기실/기계실 사전 조립, 외벽 패널 통합 모듈 → <strong>전체 공기 15~20% 단축 기여</strong>
+    </div>
+
+    <h3>5.2 디지털트윈 플랫폼</h3>
+    <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:1rem;">전 영역 통합 관리 인프라</p>
+    <table>
+      <thead><tr><th>영역</th><th>디지털트윈 활용</th></tr></thead>
+      <tbody>
+        <tr><td>설계</td><td>3D BIM 기반 설계 검증, 간섭 검토 자동화</td></tr>
+        <tr><td>조달</td><td>자재/장비 납품 현황 실시간 추적, 리드타임 예측</td></tr>
+        <tr><td>시공</td><td>4D 시뮬레이션, 공정 진척률 자동 모니터링</td></tr>
+        <tr><td>MEP</td><td>설비 배치 최적화, 시공 시퀀스 시뮬레이션</td></tr>
+        <tr><td>시운전</td><td>가상 Commissioning, 프로토콜 자동 생성</td></tr>
+      </tbody>
+    </table>
+    <div class="highlight-box">
+      의사결정 속도 <strong>50% 향상</strong> | 재작업 <strong>30% 감소</strong> | 전체 리드타임 <strong>5~8% 추가 단축</strong>
+    </div>
+
+    <h3>5.3 AI 기반 의사결정 자동화</h3>
+    <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:1rem;">승인/검토 프로세스 (전체 리드타임의 10~15%) 대폭 단축</p>
+    <table>
+      <thead><tr><th>프로세스</th><th>현행 소요</th><th>AI 자동화 후</th><th>단축률</th></tr></thead>
+      <tbody>
+        <tr><td>설계 도서 검토/승인</td><td>2~3주</td><td>3~5일</td><td>70%</td></tr>
+        <tr><td>RFI(정보요청) 처리</td><td>1~2주</td><td>1~3일</td><td>75%</td></tr>
+        <tr><td>자재 승인(Submittal)</td><td>2~4주</td><td>1주</td><td>65%</td></tr>
+        <tr><td>공정 변경 검토</td><td>1~2주</td><td>2~3일</td><td>70%</td></tr>
+        <tr><td>품질 검사 판정</td><td>3~5일</td><td>즉시~1일</td><td>80%</td></tr>
+      </tbody>
+    </table>
+    <div class="highlight-box">
+      승인/검토 전체 소요 시간 <strong>70% 단축</strong> | 전체 프로젝트 리드타임 <strong>3~5% 추가 단축</strong> | 인적 오류 <strong>60% 감소</strong>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>SK에코플랜트 Hi-tech | T2Y 프로젝트 — 반도체 Fab 건설 리드타임 30% 단축</p>
+  <p>Confidential &copy; 2026 SK에코플랜트. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

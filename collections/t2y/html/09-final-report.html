@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09. 최종 보고서 & 실행 로드맵</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .scenario-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0; }
+    .scenario-card { padding: 1.2rem; border-radius: 8px; border: 1px solid var(--border); text-align: center; }
+    .scenario-card.conservative { border-top: 4px solid var(--sk-green); }
+    .scenario-card.target { border-top: 4px solid var(--sk-blue); background: #f0f7ff; }
+    .scenario-card.aggressive { border-top: 4px solid var(--sk-orange); }
+    .scenario-card h4 { font-size: 1rem; margin-bottom: 0.5rem; }
+    .scenario-card .pct { font-size: 2rem; font-weight: 700; }
+    .scenario-card.conservative .pct { color: var(--sk-green); }
+    .scenario-card.target .pct { color: var(--sk-blue); }
+    .scenario-card.aggressive .pct { color: var(--sk-orange); }
+    .roadmap-phase { display: flex; gap: 1rem; margin: 1rem 0; }
+    .phase-block { flex: 1; padding: 1.2rem; border-radius: 8px; background: #fafbfc; border: 1px solid var(--border); }
+    .phase-block h4 { font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--sk-blue); }
+    .phase-block ul { list-style: disc; padding-left: 1.2rem; font-size: 0.9rem; }
+    .phase-block ul li { margin-bottom: 0.3rem; }
+    .top10-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .highlight-num { font-size: 1.8rem; font-weight: 700; color: var(--sk-blue); }
+    .stat-row { display: flex; gap: 1.5rem; margin: 1rem 0; }
+    .stat-box { flex: 1; text-align: center; padding: 1.2rem; background: #f8fafc; border-radius: 8px; border: 1px solid var(--border); }
+    .stat-box .label { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.3rem; }
+    .stat-box .value { font-size: 1.5rem; font-weight: 700; color: var(--sk-dark); }
+    @media (max-width: 768px) {
+      .scenario-cards, .roadmap-phase, .top10-grid { grid-template-columns: 1fr; }
+      .roadmap-phase { flex-direction: column; }
+      .stat-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>09. 최종 보고서 & 실행 로드맵</h1>
+    <p class="subtitle">반도체 Fab 건설 리드타임 30% 단축 프로젝트 종합 결과</p>
+    <span class="badge">최종 보고서</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Navigation -->
+  <nav>
+    <ul>
+      <li><a href="00-project-overview.html">00. 프로젝트 개요</a></li>
+      <li><a href="01-design-engineering.html">01. 설계/엔지니어링</a></li>
+      <li><a href="02-procurement-scm.html">02. 조달/SCM</a></li>
+      <li><a href="03-construction.html">03. 시공/건설</a></li>
+      <li><a href="04-mep-cleanroom.html">04. MEP/클린룸</a></li>
+      <li><a href="05-commissioning.html">05. 시운전/Qual</a></li>
+      <li><a href="06-process-management.html">06. 공정관리</a></li>
+      <li><a href="07-integrated-analysis.html">07. 통합 분석</a></li>
+      <li><a href="08-aidt-initiatives.html">08. AI/DT 과제</a></li>
+      <li><a href="09-final-report.html" class="active">09. 최종 보고서</a></li>
+    </ul>
+  </nav>
+
+  <!-- 1. Executive Summary -->
+  <div class="card">
+    <h2>1. Executive Summary</h2>
+
+    <h3>프로젝트 목적 & 접근방법</h3>
+    <p>본 프로젝트는 반도체 Fab 건설 리드타임(현행 24~36개월)을 <strong>30% 단축</strong>하기 위한 전략과 AI/DT 과제를 도출하는 4주 집중 리서치 프로젝트입니다.</p>
+    <p>5대 영역(설계/엔지니어링, 조달/SCM, 시공/건설, MEP/클린룸, 시운전/Qualification)별 심층 분석과 글로벌 벤치마킹을 통해 실행 가능한 단축 방안을 수립하였습니다.</p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="label">현행 건설 기간</div>
+        <div class="value">24~36개월</div>
+      </div>
+      <div class="stat-box">
+        <div class="label">목표 단축률</div>
+        <div class="value" style="color: var(--sk-red);">30%</div>
+      </div>
+      <div class="stat-box">
+        <div class="label">AI/DT 과제</div>
+        <div class="value">16~18개</div>
+      </div>
+      <div class="stat-box">
+        <div class="label">리서치 기간</div>
+        <div class="value">4주</div>
+      </div>
+    </div>
+
+    <h3>핵심 발견사항 (Key Findings)</h3>
+    <ul>
+      <li>발견사항 1: (리서치 완료 후 작성)</li>
+      <li>발견사항 2: (리서치 완료 후 작성)</li>
+      <li>발견사항 3: (리서치 완료 후 작성)</li>
+      <li>발견사항 4: (리서치 완료 후 작성)</li>
+      <li>발견사항 5: (리서치 완료 후 작성)</li>
+    </ul>
+
+    <h3>30% 단축 달성 전략 요약</h3>
+    <div class="scenario-cards">
+      <div class="scenario-card conservative">
+        <h4>보수적 시나리오</h4>
+        <div class="pct">~20%</div>
+        <p>검증된 방법론 중심<br>약 22개월</p>
+      </div>
+      <div class="scenario-card target">
+        <h4>목표 시나리오</h4>
+        <div class="pct">~30%</div>
+        <p>AI/DT + 프로세스 혁신<br>약 19개월</p>
+      </div>
+      <div class="scenario-card aggressive">
+        <h4>공격적 시나리오</h4>
+        <div class="pct">~35%+</div>
+        <p>전면적 디지털 전환<br>약 17개월</p>
+      </div>
+    </div>
+
+    <h3>AI/DT Top 10 과제 하이라이트</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>순위</th>
+          <th>과제명</th>
+          <th>유형</th>
+          <th>예상 단축 효과</th>
+          <th>투자 규모</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>(TBD)</td><td><span class="tag tag-quickwin">Quick Win</span></td><td>-</td><td>-</td></tr>
+        <tr><td>2</td><td>(TBD)</td><td><span class="tag tag-quickwin">Quick Win</span></td><td>-</td><td>-</td></tr>
+        <tr><td>3</td><td>(TBD)</td><td><span class="tag tag-quickwin">Quick Win</span></td><td>-</td><td>-</td></tr>
+        <tr><td>4</td><td>(TBD)</td><td><span class="tag tag-quickwin">Quick Win</span></td><td>-</td><td>-</td></tr>
+        <tr><td>5</td><td>(TBD)</td><td><span class="tag tag-quickwin">Quick Win</span></td><td>-</td><td>-</td></tr>
+        <tr><td>6</td><td>(TBD)</td><td><span class="tag tag-strategic">Strategic</span></td><td>-</td><td>-</td></tr>
+        <tr><td>7</td><td>(TBD)</td><td><span class="tag tag-strategic">Strategic</span></td><td>-</td><td>-</td></tr>
+        <tr><td>8</td><td>(TBD)</td><td><span class="tag tag-strategic">Strategic</span></td><td>-</td><td>-</td></tr>
+        <tr><td>9</td><td>(TBD)</td><td><span class="tag tag-strategic">Strategic</span></td><td>-</td><td>-</td></tr>
+        <tr><td>10</td><td>(TBD)</td><td><span class="tag tag-strategic">Strategic</span></td><td>-</td><td>-</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2. 프로젝트 개요 -->
+  <div class="card">
+    <h2>2. 프로젝트 개요</h2>
+
+    <h3>배경</h3>
+    <ul>
+      <li>글로벌 반도체 수요 급증에 따른 Fab 건설 속도 경쟁 심화</li>
+      <li>TSMC, Samsung, Intel 등 주요 업체의 공기 단축 트렌드</li>
+      <li>SK에코플랜트의 Fab 건설 경쟁력 강화 필요성</li>
+    </ul>
+
+    <h3>목표</h3>
+    <ul>
+      <li>반도체 Fab 건설 리드타임 30% 단축 방안 도출</li>
+      <li>AI/DT 기반 혁신 과제 16~18개 발굴 및 우선순위화</li>
+      <li>실행 가능한 로드맵 수립</li>
+    </ul>
+
+    <h3>범위</h3>
+    <p>설계/엔지니어링 ~ 시운전/Qualification 전 과정 (반도체 300mm Fab 기준)</p>
+
+    <h3>팀 구성</h3>
+    <table>
+      <thead>
+        <tr><th>담당자</th><th>담당 영역</th><th>주요 역할</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>김선문</td><td>설계/엔지니어링</td><td>설계 프로세스 분석 및 AI/DT 과제 도출</td></tr>
+        <tr><td>허재경</td><td>조달/SCM</td><td>조달 프로세스 분석 및 AI/DT 과제 도출</td></tr>
+        <tr><td>김정훈</td><td>시공/건설</td><td>시공 프로세스 분석 및 AI/DT 과제 도출</td></tr>
+        <tr><td>이민석</td><td>MEP/클린룸 설비</td><td>MEP 프로세스 분석 및 AI/DT 과제 도출</td></tr>
+        <tr><td>백민우</td><td>시운전/Qualification</td><td>시운전 프로세스 분석 및 AI/DT 과제 도출</td></tr>
+      </tbody>
+    </table>
+
+    <h3>방법론</h3>
+    <ul>
+      <li>문헌 리서치 + 글로벌 벤치마킹</li>
+      <li>영역별 심층 분석 (As-Is → To-Be)</li>
+      <li>AI/DT 과제 도출 및 우선순위 매트릭스</li>
+      <li>통합 시나리오 분석 및 로드맵 수립</li>
+    </ul>
+  </div>
+
+  <!-- 3. As-Is 분석 -->
+  <div class="card">
+    <h2>3. 반도체 Fab 건설 현황 분석 (As-Is)</h2>
+
+    <h3>전체 건설 프로세스 맵 (24~36개월)</h3>
+    <table>
+      <thead>
+        <tr><th>영역</th><th>현행 기간</th><th>주요 활동</th><th>선행 조건</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>설계/엔지니어링</td><td>(TBD)</td><td>기본설계, 상세설계, BIM 모델링</td><td>-</td></tr>
+        <tr><td>조달/SCM</td><td>(TBD)</td><td>장비 발주, 자재 조달, 물류 관리</td><td>설계 완료(일부)</td></tr>
+        <tr><td>시공/건설</td><td>(TBD)</td><td>토목, 구조, 건축</td><td>설계 완료</td></tr>
+        <tr><td>MEP/클린룸 설비</td><td>(TBD)</td><td>기계, 전기, 배관, 클린룸</td><td>구조 완료(일부)</td></tr>
+        <tr><td>시운전/Qualification</td><td>(TBD)</td><td>시스템 시운전, 클린룸 인증</td><td>MEP 완료</td></tr>
+      </tbody>
+    </table>
+
+    <h3>글로벌 벤치마킹 종합</h3>
+    <table>
+      <thead>
+        <tr><th>항목</th><th>TSMC</th><th>Samsung</th><th>Intel</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>평균 건설 기간</td><td>(TBD)</td><td>(TBD)</td><td>(TBD)</td></tr>
+        <tr><td>핵심 전략</td><td>(TBD)</td><td>(TBD)</td><td>(TBD)</td></tr>
+        <tr><td>차별화 포인트</td><td>(TBD)</td><td>(TBD)</td><td>(TBD)</td></tr>
+        <tr><td>AI/DT 활용 수준</td><td>(TBD)</td><td>(TBD)</td><td>(TBD)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>핵심 Pain Point 종합 (Top 10)</h3>
+    <table>
+      <thead>
+        <tr><th>순위</th><th>Pain Point</th><th>영향 영역</th><th>심각도</th><th>개선 가능성</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>(TBD)</td><td>-</td><td><span class="tag tag-high">High</span></td><td>-</td></tr>
+        <tr><td>2</td><td>(TBD)</td><td>-</td><td><span class="tag tag-high">High</span></td><td>-</td></tr>
+        <tr><td>3</td><td>(TBD)</td><td>-</td><td><span class="tag tag-high">High</span></td><td>-</td></tr>
+        <tr><td>4</td><td>(TBD)</td><td>-</td><td><span class="tag tag-high">High</span></td><td>-</td></tr>
+        <tr><td>5</td><td>(TBD)</td><td>-</td><td><span class="tag tag-mid">Mid</span></td><td>-</td></tr>
+        <tr><td>6</td><td>(TBD)</td><td>-</td><td><span class="tag tag-mid">Mid</span></td><td>-</td></tr>
+        <tr><td>7</td><td>(TBD)</td><td>-</td><td><span class="tag tag-mid">Mid</span></td><td>-</td></tr>
+        <tr><td>8</td><td>(TBD)</td><td>-</td><td><span class="tag tag-mid">Mid</span></td><td>-</td></tr>
+        <tr><td>9</td><td>(TBD)</td><td>-</td><td><span class="tag tag-low">Low</span></td><td>-</td></tr>
+        <tr><td>10</td><td>(TBD)</td><td>-</td><td><span class="tag tag-low">Low</span></td><td>-</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 4. 영역별 단축 방안 -->
+  <div class="card">
+    <h2>4. 영역별 리드타임 단축 방안</h2>
+
+    <h3>4.1 설계/엔지니어링 (김선문)</h3>
+    <div class="task-card">
+      <h4>현행 → 목표</h4>
+      <div class="meta">
+        <span>현행: (TBD)개월</span>
+        <span>목표: (TBD)개월</span>
+        <span>단축률: (TBD)%</span>
+      </div>
+      <p style="margin-top: 0.8rem;"><strong>핵심 단축방안:</strong></p>
+      <ul style="margin-left: 1.2rem; margin-top: 0.3rem;">
+        <li>단축방안 1 (TBD)</li>
+        <li>단축방안 2 (TBD)</li>
+        <li>단축방안 3 (TBD)</li>
+      </ul>
+      <p style="margin-top: 0.5rem;"><strong>AI/DT 과제:</strong> (TBD)</p>
+    </div>
+
+    <h3>4.2 조달/SCM (허재경)</h3>
+    <div class="task-card">
+      <h4>현행 → 목표</h4>
+      <div class="meta">
+        <span>현행: (TBD)개월</span>
+        <span>목표: (TBD)개월</span>
+        <span>단축률: (TBD)%</span>
+      </div>
+      <p style="margin-top: 0.8rem;"><strong>핵심 단축방안:</strong></p>
+      <ul style="margin-left: 1.2rem; margin-top: 0.3rem;">
+        <li>단축방안 1 (TBD)</li>
+        <li>단축방안 2 (TBD)</li>
+        <li>단축방안 3 (TBD)</li>
+      </ul>
+      <p style="margin-top: 0.5rem;"><strong>AI/DT 과제:</strong> (TBD)</p>
+    </div>
+
+    <h3>4.3 시공/건설 (김정훈)</h3>
+    <div class="task-card">
+      <h4>현행 → 목표</h4>
+      <div class="meta">
+        <span>현행: (TBD)개월</span>
+        <span>목표: (TBD)개월</span>
+        <span>단축률: (TBD)%</span>
+      </div>
+      <p style="margin-top: 0.8rem;"><strong>핵심 단축방안:</strong></p>
+      <ul style="margin-left: 1.2rem; margin-top: 0.3rem;">
+        <li>단축방안 1 (TBD)</li>
+        <li>단축방안 2 (TBD)</li>
+        <li>단축방안 3 (TBD)</li>
+      </ul>
+      <p style="margin-top: 0.5rem;"><strong>AI/DT 과제:</strong> (TBD)</p>
+    </div>
+
+    <h3>4.4 MEP/클린룸 설비 (이민석)</h3>
+    <div class="task-card">
+      <h4>현행 → 목표</h4>
+      <div class="meta">
+        <span>현행: (TBD)개월</span>
+        <span>목표: (TBD)개월</span>
+        <span>단축률: (TBD)%</span>
+      </div>
+      <p style="margin-top: 0.8rem;"><strong>핵심 단축방안:</strong></p>
+      <ul style="margin-left: 1.2rem; margin-top: 0.3rem;">
+        <li>단축방안 1 (TBD)</li>
+        <li>단축방안 2 (TBD)</li>
+        <li>단축방안 3 (TBD)</li>
+      </ul>
+      <p style="margin-top: 0.5rem;"><strong>AI/DT 과제:</strong> (TBD)</p>
+    </div>
+
+    <h3>4.5 시운전/Qualification (백민우)</h3>
+    <div class="task-card">
+      <h4>현행 → 목표</h4>
+      <div class="meta">
+        <span>현행: (TBD)개월</span>
+        <span>목표: (TBD)개월</span>
+        <span>단축률: (TBD)%</span>
+      </div>
+      <p style="margin-top: 0.8rem;"><strong>핵심 단축방안:</strong></p>
+      <ul style="margin-left: 1.2rem; margin-top: 0.3rem;">
+        <li>단축방안 1 (TBD)</li>
+        <li>단축방안 2 (TBD)</li>
+        <li>단축방안 3 (TBD)</li>
+      </ul>
+      <p style="margin-top: 0.5rem;"><strong>AI/DT 과제:</strong> (TBD)</p>
+    </div>
+  </div>
+
+  <!-- 5. 통합 분석 -->
+  <div class="card">
+    <h2>5. 통합 분석</h2>
+
+    <h3>크리티컬 패스 분석</h3>
+    <ul>
+      <li>크리티컬 패스 상 주요 활동 식별</li>
+      <li>병렬화 가능 영역 분석</li>
+      <li>크리티컬 패스 단축 핵심 레버</li>
+    </ul>
+
+    <h3>영역 간 연계 최적화</h3>
+    <table>
+      <thead>
+        <tr><th>연계 영역</th><th>최적화 방안</th><th>예상 효과</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>설계 → 조달</td><td>Early Procurement (선행 발주)</td><td>(TBD)</td></tr>
+        <tr><td>조달 → 시공</td><td>JIT Delivery (적시 납품)</td><td>(TBD)</td></tr>
+        <tr><td>시공 → MEP</td><td>병행 시공 (Concurrent Construction)</td><td>(TBD)</td></tr>
+        <tr><td>MEP → 시운전</td><td>Progressive Commissioning</td><td>(TBD)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>통합 단축 시나리오</h3>
+    <div class="scenario-cards">
+      <div class="scenario-card conservative">
+        <h4>보수적 시나리오</h4>
+        <div class="pct">~20%</div>
+        <p>기존 방법론 최적화</p>
+        <p>약 22개월</p>
+      </div>
+      <div class="scenario-card target">
+        <h4>목표 시나리오</h4>
+        <div class="pct">~30%</div>
+        <p>AI/DT + 프로세스 혁신</p>
+        <p>약 19개월</p>
+      </div>
+      <div class="scenario-card aggressive">
+        <h4>공격적 시나리오</h4>
+        <div class="pct">~35%+</div>
+        <p>전면적 디지털 전환</p>
+        <p>약 17개월</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. AI/DT 과제 종합 -->
+  <div class="card">
+    <h2>6. AI/DT 과제 종합</h2>
+
+    <h3>전체 과제 Pool (16~18개)</h3>
+    <p>영역별 도출 과제 전체 리스트는 <a href="07-aidt-initiatives.html">07. AI/DT 과제 Pool & 우선순위</a> 페이지에서 상세 확인 가능합니다.</p>
+
+    <h3>우선순위 매트릭스</h3>
+    <div class="matrix">
+      <div class="matrix-cell" style="background: #f0fdf4;">
+        <h4>Quick Win (높은 효과 + 쉬운 실행)</h4>
+        <p>(리서치 완료 후 배치)</p>
+      </div>
+      <div class="matrix-cell" style="background: #eff6ff;">
+        <h4>Strategic (높은 효과 + 어려운 실행)</h4>
+        <p>(리서치 완료 후 배치)</p>
+      </div>
+      <div class="matrix-cell" style="background: #fefce8;">
+        <h4>Fill-in (낮은 효과 + 쉬운 실행)</h4>
+        <p>(리서치 완료 후 배치)</p>
+      </div>
+      <div class="matrix-cell" style="background: #fef2f2;">
+        <h4>Avoid (낮은 효과 + 어려운 실행)</h4>
+        <p>(리서치 완료 후 배치)</p>
+      </div>
+    </div>
+
+    <div class="top10-grid">
+      <div>
+        <h3>Quick Win Top 5</h3>
+        <table>
+          <thead>
+            <tr><th>순위</th><th>과제명</th><th>영역</th><th>예상 효과</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>(TBD)</td><td>-</td><td>-</td></tr>
+            <tr><td>2</td><td>(TBD)</td><td>-</td><td>-</td></tr>
+            <tr><td>3</td><td>(TBD)</td><td>-</td><td>-</td></tr>
+            <tr><td>4</td><td>(TBD)</td><td>-</td><td>-</td></tr>
+            <tr><td>5</td><td>(TBD)</td><td>-</td><td>-</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3>Strategic Top 5</h3>
+        <table>
+          <thead>
+            <tr><th>순위</th><th>과제명</th><th>영역</th><th>예상 효과</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>(TBD)</td><td>-</td><td>-</td></tr>
+            <tr><td>2</td><td>(TBD)</td><td>-</td><td>-</td></tr>
+            <tr><td>3</td><td>(TBD)</td><td>-</td><td>-</td></tr>
+            <tr><td>4</td><td>(TBD)</td><td>-</td><td>-</td></tr>
+            <tr><td>5</td><td>(TBD)</td><td>-</td><td>-</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3>과제별 실행 상세</h3>
+    <p>각 과제의 예산, 인력, 일정, ROI 상세는 리서치 완료 후 작성 예정입니다.</p>
+  </div>
+
+  <!-- 7. 실행 로드맵 -->
+  <div class="card">
+    <h2>7. 실행 로드맵</h2>
+
+    <div class="roadmap-phase">
+      <div class="phase-block" style="border-left: 4px solid var(--sk-green);">
+        <h4>단기 (6개월)</h4>
+        <ul>
+          <li>Quick Win 과제 착수 및 완료</li>
+          <li>파일럿 프로젝트 선정 및 실행</li>
+          <li>기반 인프라 구축</li>
+          <li>변화 관리 프로그램 시작</li>
+        </ul>
+      </div>
+      <div class="phase-block" style="border-left: 4px solid var(--sk-blue);">
+        <h4>중기 (1년)</h4>
+        <ul>
+          <li>Strategic 과제 본격 추진</li>
+          <li>파일럿 결과 기반 확대 적용</li>
+          <li>프로세스 표준화</li>
+          <li>성과 측정 및 피드백</li>
+        </ul>
+      </div>
+      <div class="phase-block" style="border-left: 4px solid var(--sk-orange);">
+        <h4>장기 (2년)</h4>
+        <ul>
+          <li>전사 확산 및 고도화</li>
+          <li>AI/DT 플랫폼 통합</li>
+          <li>지속적 개선 체계 정착</li>
+          <li>글로벌 베스트 프랙티스 정립</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>예상 총 투자비 & ROI</h3>
+    <table>
+      <thead>
+        <tr><th>구분</th><th>투자비</th><th>기대 효과</th><th>ROI</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>단기 (6개월)</td><td>(TBD)</td><td>(TBD)</td><td>(TBD)</td></tr>
+        <tr><td>중기 (1년)</td><td>(TBD)</td><td>(TBD)</td><td>(TBD)</td></tr>
+        <tr><td>장기 (2년)</td><td>(TBD)</td><td>(TBD)</td><td>(TBD)</td></tr>
+        <tr style="font-weight: 700;"><td>합계</td><td>(TBD)</td><td>(TBD)</td><td>(TBD)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>조직/거버넌스 제안</h3>
+    <ul>
+      <li><strong>추진 조직:</strong> 전담 TF 구성 (DT 추진팀 + 현업 전문가)</li>
+      <li><strong>의사결정:</strong> 월 1회 스티어링 커미티, 주간 실무 회의</li>
+      <li><strong>성과 관리:</strong> KPI 기반 대시보드, 분기별 성과 리뷰</li>
+    </ul>
+  </div>
+
+  <!-- 8. Next Step -->
+  <div class="card">
+    <h2>8. Next Step & 제언</h2>
+
+    <h3>즉시 실행 사항</h3>
+    <ol>
+      <li>(리서치 완료 후 작성)</li>
+      <li>(리서치 완료 후 작성)</li>
+      <li>(리서치 완료 후 작성)</li>
+    </ol>
+
+    <h3>중장기 제언</h3>
+    <ol>
+      <li>(리서치 완료 후 작성)</li>
+      <li>(리서치 완료 후 작성)</li>
+      <li>(리서치 완료 후 작성)</li>
+    </ol>
+
+    <h3>성공 조건</h3>
+    <div class="matrix">
+      <div class="matrix-cell">
+        <h4>경영진 스폰서십</h4>
+        <p>C-Level의 강력한 지원과 의지 표명</p>
+      </div>
+      <div class="matrix-cell">
+        <h4>전담 조직 구성</h4>
+        <p>DT 전문가 + 현업 전문가 혼합 TF</p>
+      </div>
+      <div class="matrix-cell">
+        <h4>변화 관리</h4>
+        <p>현장 중심의 교육 및 변화 관리 프로그램</p>
+      </div>
+      <div class="matrix-cell">
+        <h4>파트너 생태계</h4>
+        <p>기술 파트너, 시공사, 장비사 협력 체계</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>SK에코플랜트 Hi-tech | Fab 리드타임 30% 단축 프로젝트 | 2026</p>
+</footer>
+
+</body>
+</html>

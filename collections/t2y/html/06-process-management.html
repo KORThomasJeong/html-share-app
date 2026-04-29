@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06. 공정관리 영역 분석 | SK에코플랜트 T2Y</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .phase-flow {
+      display: flex;
+      gap: 0;
+      margin: 1.2rem 0;
+      overflow-x: auto;
+    }
+    .phase-block {
+      flex: 1;
+      min-width: 130px;
+      padding: 1rem 0.8rem;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-right: none;
+      background: #f8fafc;
+      position: relative;
+    }
+    .phase-block:last-child { border-right: 1px solid var(--border); }
+    .phase-block.critical { background: #fff1f2; border-color: var(--sk-red); }
+    .phase-block .phase-num {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.3rem;
+    }
+    .phase-block .phase-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--sk-dark);
+      margin-bottom: 0.4rem;
+    }
+    .phase-block .phase-dur {
+      font-size: 0.8rem;
+      color: var(--sk-blue);
+      font-weight: 600;
+    }
+    .phase-block.critical .phase-name { color: var(--sk-red); }
+    .gantt-table th, .gantt-table td {
+      font-size: 0.82rem;
+      padding: 0.5rem 0.8rem;
+    }
+    .gantt-bar {
+      display: inline-block;
+      height: 14px;
+      border-radius: 3px;
+      background: var(--sk-blue);
+      vertical-align: middle;
+    }
+    .gantt-bar.critical { background: var(--sk-red); }
+    .gantt-bar.parallel { background: var(--sk-green); }
+    .legend-row {
+      display: flex;
+      gap: 1.5rem;
+      margin: 0.8rem 0;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+    }
+    .kpi-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .kpi-mini {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .kpi-mini .val {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--sk-dark);
+    }
+    .kpi-mini .val.red { color: var(--sk-red); }
+    .kpi-mini .lbl {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 0.2rem;
+    }
+    .initiative-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem;
+      margin: 0.8rem 0;
+      border-left: 4px solid var(--sk-blue);
+    }
+    .initiative-card.high { border-left-color: var(--sk-red); }
+    .initiative-card.mid { border-left-color: var(--sk-orange); }
+    .initiative-card .title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .initiative-card .meta {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    .tag {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #eff6ff;
+      color: var(--sk-blue);
+      border: 1px solid #bfdbfe;
+      margin-right: 0.3rem;
+    }
+    .tag.red { background: #fef2f2; color: var(--sk-red); border-color: #fecaca; }
+    .tag.green { background: #ecfdf5; color: var(--sk-green); border-color: #a7f3d0; }
+    @media (max-width: 768px) {
+      .kpi-mini-grid { grid-template-columns: repeat(2, 1fr); }
+      .phase-flow { flex-direction: column; }
+      .phase-block { border-right: 1px solid var(--border); border-bottom: none; }
+      .phase-block:last-child { border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <span class="badge">06 / 09</span>
+    <h1>06. 공정관리 영역 분석</h1>
+    <p class="subtitle">담당: TBD | 반도체 Fab 건설 전체 공정 통합관리 및 리드타임 단축 전략</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Navigation -->
+  <nav>
+    <ul>
+      <li><a href="00-project-overview.html">00. 프로젝트 개요</a></li>
+      <li><a href="01-design-engineering.html">01. 설계/엔지니어링</a></li>
+      <li><a href="02-procurement-scm.html">02. 조달/SCM</a></li>
+      <li><a href="03-construction.html">03. 시공/건설</a></li>
+      <li><a href="04-mep-cleanroom.html">04. MEP/클린룸</a></li>
+      <li><a href="05-commissioning.html">05. 시운전/Qual</a></li>
+      <li><a href="06-process-management.html" class="active">06. 공정관리</a></li>
+      <li><a href="07-integrated-analysis.html">07. 통합 분석</a></li>
+      <li><a href="08-aidt-initiatives.html">08. AI/DT 과제</a></li>
+      <li><a href="09-final-report.html">09. 최종 보고서</a></li>
+    </ul>
+  </nav>
+
+  <!-- 1. 영역 개요 & 스코프 -->
+  <div class="card">
+    <h2>1. 영역 개요 &amp; 스코프</h2>
+    <p>반도체 Fab 건설 프로젝트는 수십 개 공종이 복잡하게 얽힌 메가프로젝트다. 공정관리 영역은 전체 마스터 스케줄 수립부터 크리티컬 패스 식별, 공종 간 인터페이스 조율, 진도율 관리까지 <strong>프로젝트 납기를 직접 결정하는 핵심 영역</strong>이다.</p>
+
+    <div class="kpi-mini-grid">
+      <div class="kpi-mini">
+        <div class="val">24~36</div>
+        <div class="lbl">현행 총 공사기간 (개월)</div>
+      </div>
+      <div class="kpi-mini">
+        <div class="val red">30%</div>
+        <div class="lbl">단축 목표</div>
+      </div>
+      <div class="kpi-mini">
+        <div class="val">5,000+</div>
+        <div class="lbl">Activity 수 (대형 Fab 기준)</div>
+      </div>
+      <div class="kpi-mini">
+        <div class="val">15+</div>
+        <div class="lbl">주요 공종 (공정 인터페이스)</div>
+      </div>
+    </div>
+
+    <h3>분석 스코프</h3>
+    <ul style="margin: 0.5rem 0 0 1.5rem; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8;">
+      <li>반도체 Fab 건설 전체 공정 흐름 (Phase별 As-Is 매핑)</li>
+      <li>크리티컬 패스 식별 및 리드타임 병목 구간 분석</li>
+      <li>공정 병렬화 가능 구간 및 패스트트랙 전략 도출</li>
+      <li>Look-ahead 스케줄링, Last Planner System 적용 방안</li>
+      <li>AI/DT 기반 공정 예측 및 리스크 선제 대응 방안</li>
+    </ul>
+  </div>
+
+  <!-- 2. 반도체 Fab 건설 전체 공정 흐름 -->
+  <div class="card">
+    <h2>2. 반도체 Fab 건설 전체 공정 흐름</h2>
+    <p>반도체 Fab 건설은 크게 <strong>6개 Phase</strong>로 구성된다. 각 Phase의 의존성과 인터페이스가 전체 리드타임을 결정한다.</p>
+
+    <div class="phase-flow">
+      <div class="phase-block">
+        <div class="phase-num">Phase 1</div>
+        <div class="phase-name">부지 확보 &amp; 인허가</div>
+        <div class="phase-dur">3~6개월</div>
+      </div>
+      <div class="phase-block critical">
+        <div class="phase-num">Phase 2</div>
+        <div class="phase-name">설계 (기본/실시)</div>
+        <div class="phase-dur">6~10개월 ★</div>
+      </div>
+      <div class="phase-block critical">
+        <div class="phase-num">Phase 3</div>
+        <div class="phase-name">조달 &amp; 발주</div>
+        <div class="phase-dur">6~18개월 ★</div>
+      </div>
+      <div class="phase-block">
+        <div class="phase-num">Phase 4</div>
+        <div class="phase-name">토목/골조 시공</div>
+        <div class="phase-dur">8~14개월</div>
+      </div>
+      <div class="phase-block critical">
+        <div class="phase-num">Phase 5</div>
+        <div class="phase-name">MEP/클린룸 설치</div>
+        <div class="phase-dur">10~16개월 ★</div>
+      </div>
+      <div class="phase-block">
+        <div class="phase-num">Phase 6</div>
+        <div class="phase-name">시운전/Qual</div>
+        <div class="phase-dur">4~8개월</div>
+      </div>
+    </div>
+    <p style="font-size: 0.8rem; color: var(--sk-red); margin-top: 0.3rem;">★ 크리티컬 패스 구간</p>
+
+    <h3>주요 공종 및 인터페이스</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>공종</th>
+          <th>선행 공종</th>
+          <th>후행 공종</th>
+          <th>리드타임 영향</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>부지 조성/토공</td>
+          <td>인허가</td>
+          <td>기초/골조</td>
+          <td><span style="color:var(--text-secondary)">중간</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>기초/골조 공사</td>
+          <td>부지 조성</td>
+          <td>내부 마감, MEP</td>
+          <td><span style="color:var(--sk-orange)">높음</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>기계/배관 (Process Pipe)</td>
+          <td>기본설계, 골조</td>
+          <td>클린룸, 시운전</td>
+          <td><span style="color:var(--sk-red)">크리티컬</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>전기/계장</td>
+          <td>기본설계, 골조</td>
+          <td>클린룸, 시운전</td>
+          <td><span style="color:var(--sk-red)">크리티컬</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>클린룸 구조/바닥</td>
+          <td>골조, 기계/배관</td>
+          <td>공조/필터 설치</td>
+          <td><span style="color:var(--sk-red)">크리티컬</span></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>공조/FFU 설치 (HVAC)</td>
+          <td>클린룸 구조</td>
+          <td>장비 반입, 시운전</td>
+          <td><span style="color:var(--sk-red)">크리티컬</span></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>초순수/폐수처리 (UPW/WWT)</td>
+          <td>토목, 기계설계</td>
+          <td>시운전</td>
+          <td><span style="color:var(--sk-orange)">높음</span></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>특수가스/케미컬 (Gas/Chemical)</td>
+          <td>배관, 안전인허가</td>
+          <td>장비 설치, 시운전</td>
+          <td><span style="color:var(--sk-orange)">높음</span></td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>소방/안전설비</td>
+          <td>골조, MEP</td>
+          <td>사용승인</td>
+          <td><span style="color:var(--text-secondary)">중간</span></td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>장비 반입/설치</td>
+          <td>클린룸, HVAC, 유틸리티</td>
+          <td>시운전/Qual</td>
+          <td><span style="color:var(--sk-red)">크리티컬</span></td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>시운전/Qualification</td>
+          <td>전 공종 완료</td>
+          <td>양산 개시</td>
+          <td><span style="color:var(--sk-red)">크리티컬</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 3. As-Is 공정관리 현황 & 문제점 -->
+  <div class="card">
+    <h2>3. As-Is 공정관리 현황 &amp; 문제점</h2>
+
+    <h3>현행 공정관리 방식</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>구분</th>
+          <th>현황</th>
+          <th>문제점</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>스케줄 도구</strong></td>
+          <td>Primavera P6, MS Project</td>
+          <td>영역별 분산 관리, 통합 마스터 스케줄 부재</td>
+        </tr>
+        <tr>
+          <td><strong>업데이트 주기</strong></td>
+          <td>주 1회 보고 기준</td>
+          <td>실시간 진도 파악 불가, 지연 인지 후 대응 지연</td>
+        </tr>
+        <tr>
+          <td><strong>인터페이스 관리</strong></td>
+          <td>회의/메일 중심</td>
+          <td>공종 간 선후행 관계 누락, 충돌 빈번</td>
+        </tr>
+        <tr>
+          <td><strong>리스크 관리</strong></td>
+          <td>경험 기반 판단</td>
+          <td>정량적 리스크 분석 부재, 선제 대응 미흡</td>
+        </tr>
+        <tr>
+          <td><strong>Look-ahead</strong></td>
+          <td>2주 단위 (일부)</td>
+          <td>4~6주 Look-ahead 미흡, 자재/인력 선행 확보 실패</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>주요 리드타임 낭비 원인</h3>
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0;">
+      <div class="initiative-card high">
+        <div class="title">설계-조달 인터페이스 지연</div>
+        <div class="meta">영향: <strong>2~4개월</strong></div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);">실시설계 완료 전 발주 착수 불가로 인한 조달 리드타임 중첩. 설계 Freeze 지연이 전 공종으로 파급.</p>
+      </div>
+      <div class="initiative-card high">
+        <div class="title">장납기 기자재 선행 발주 실패</div>
+        <div class="meta">영향: <strong>3~6개월</strong></div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);">Process Chiller, 변압기, HVAC 핵심 장비의 발주 지연. 크리티컬 패스 직결 품목 사전 식별 미흡.</p>
+      </div>
+      <div class="initiative-card mid">
+        <div class="title">공종 간 순서 고착화</div>
+        <div class="meta">영향: <strong>1~3개월</strong></div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);">병렬 시공 가능 공종을 관행적으로 순차 진행. 패스트트랙 적용 구간 미검토.</p>
+      </div>
+      <div class="initiative-card mid">
+        <div class="title">시운전 사전 준비 부족</div>
+        <div class="meta">영향: <strong>1~2개월</strong></div>
+        <p style="font-size:0.85rem;color:var(--text-secondary);">시운전 절차서/체크리스트 시공 단계에서 미작성. 장비 인도 후 준비 착수로 시운전 기간 연장.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 리드타임 단축 이니셔티브 -->
+  <div class="card">
+    <h2>4. 리드타임 단축 이니셔티브</h2>
+
+    <h3>4-1. 통합 마스터 스케줄 (IMS) 체계 구축</h3>
+    <p>전 영역(설계~시운전)을 단일 P6 데이터베이스로 통합하고, 영역별 세부 공정과 마스터 스케줄 간 자동 연동 체계를 구축한다.</p>
+    <table>
+      <thead><tr><th>항목</th><th>As-Is</th><th>To-Be</th><th>단축 효과</th></tr></thead>
+      <tbody>
+        <tr><td>스케줄 통합</td><td>영역별 독립 관리</td><td>IMS 단일 플랫폼</td><td>조정 시간 50% 감소</td></tr>
+        <tr><td>업데이트 주기</td><td>주 1회</td><td>일 단위 자동 업데이트</td><td>지연 조기 감지 → 1~2주 단축</td></tr>
+        <tr><td>인터페이스 관리</td><td>회의/메일</td><td>BIM 연계 인터페이스 DB</td><td>충돌·누락 90% 감소</td></tr>
+      </tbody>
+    </table>
+
+    <h3>4-2. 크리티컬 패스 집중 관리</h3>
+    <p>전체 Activity 중 크리티컬 패스 구간(설계 Freeze → 장납기 발주 → 클린룸 → 시운전)에 자원과 관심을 집중한다.</p>
+    <ul style="margin: 0.5rem 0 0 1.5rem; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8;">
+      <li>크리티컬 패스 Activity 전담 관리자 지정 (Critical Path Owner)</li>
+      <li>주 2회 크리티컬 패스 리뷰 미팅 운영</li>
+      <li>Float 0 이하 Activity 발생 즉시 에스컬레이션</li>
+      <li>Near-Critical Path (Float 2주 이하) 선제 모니터링</li>
+    </ul>
+
+    <h3>4-3. 패스트트랙 (Fast-Track) 전략</h3>
+    <p>설계 완료를 기다리지 않고 충분한 정보가 확보된 공종부터 선행 착수하는 패스트트랙 구간을 체계적으로 식별·적용한다.</p>
+    <table>
+      <thead><tr><th>패스트트랙 구간</th><th>선행 착수 조건</th><th>단축 기대 효과</th></tr></thead>
+      <tbody>
+        <tr><td>기초/토공 ↔ 설계 진행 중 발주</td><td>부지 레이아웃 Freeze</td><td>1~2개월</td></tr>
+        <tr><td>장납기 기자재 사전 발주</td><td>기본설계 80% 완료</td><td>2~4개월</td></tr>
+        <tr><td>골조 공사 ↔ 상세설계 병행</td><td>구조 기본도 완료</td><td>1~3개월</td></tr>
+        <tr><td>MEP 선행 설치 ↔ 내부 마감 병행</td><td>Zone별 설계 완료</td><td>1~2개월</td></tr>
+        <tr><td>시운전 준비 ↔ 시공 단계 병행</td><td>시운전 절차서 사전 작성</td><td>1~2개월</td></tr>
+      </tbody>
+    </table>
+
+    <h3>4-4. Look-ahead 스케줄링 고도화</h3>
+    <p>6주 Look-ahead 스케줄을 도입하여 자재 반입·인력 투입·인허가를 선행 확보한다.</p>
+    <ul style="margin: 0.5rem 0 0 1.5rem; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8;">
+      <li>매주 금요일 6주 Look-ahead 미팅 (현장소장, 공종별 책임자)</li>
+      <li>Constraint Log 운영: 자재, 인력, 인허가, 도면 등 제약 사항 사전 해소</li>
+      <li>Last Planner System(LPS) 도입으로 주간 계획 신뢰도(PPC) 85% 이상 목표</li>
+    </ul>
+
+    <h3>4-5. AI/DT 기반 공정 예측 및 리스크 관리</h3>
+    <table>
+      <thead><tr><th>과제</th><th>내용</th><th>기대 효과</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>AI 공정 지연 예측</td>
+          <td>과거 유사 프로젝트 데이터 기반 지연 패턴 학습, 조기 경보</td>
+          <td>지연 2~4주 전 선제 대응</td>
+        </tr>
+        <tr>
+          <td>BIM-Schedule 연동</td>
+          <td>4D BIM으로 공정-3D 모델 연동, 공간 충돌/순서 오류 사전 감지</td>
+          <td>재작업 50~70% 감소</td>
+        </tr>
+        <tr>
+          <td>드론/IoT 진도 자동화</td>
+          <td>현장 드론 촬영 + AI 분석으로 실측 진도율 자동 산출</td>
+          <td>보고 지연 제거, 실시간 대응</td>
+        </tr>
+        <tr>
+          <td>Monte Carlo 리스크 분석</td>
+          <td>확률적 공기 시뮬레이션으로 P50/P80 완공일 산출</td>
+          <td>리스크 기반 버퍼 최적화</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 5. 단축 효과 정량화 -->
+  <div class="card">
+    <h2>5. 단축 효과 정량화 (가설)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>이니셔티브</th>
+          <th>단축 효과 (개월)</th>
+          <th>실현 가능성</th>
+          <th>우선순위</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>장납기 기자재 사전 발주</td>
+          <td><strong>2~4개월</strong></td>
+          <td><span style="color:var(--sk-green)">높음</span></td>
+          <td><span class="tag red">P1</span></td>
+        </tr>
+        <tr>
+          <td>설계-조달 패스트트랙</td>
+          <td><strong>1~3개월</strong></td>
+          <td><span style="color:var(--sk-green)">높음</span></td>
+          <td><span class="tag red">P1</span></td>
+        </tr>
+        <tr>
+          <td>골조↔MEP 병렬 시공</td>
+          <td><strong>1~3개월</strong></td>
+          <td><span style="color:var(--sk-orange)">중간</span></td>
+          <td><span class="tag">P2</span></td>
+        </tr>
+        <tr>
+          <td>시운전 사전 준비</td>
+          <td><strong>1~2개월</strong></td>
+          <td><span style="color:var(--sk-green)">높음</span></td>
+          <td><span class="tag red">P1</span></td>
+        </tr>
+        <tr>
+          <td>Look-ahead + LPS 도입</td>
+          <td><strong>1~2개월</strong></td>
+          <td><span style="color:var(--sk-green)">높음</span></td>
+          <td><span class="tag">P2</span></td>
+        </tr>
+        <tr>
+          <td>AI 공정 예측/4D BIM</td>
+          <td><strong>1~2개월</strong></td>
+          <td><span style="color:var(--sk-orange)">중간</span></td>
+          <td><span class="tag">P2</span></td>
+        </tr>
+        <tr style="background:#f0f7ff;">
+          <td><strong>합계 (중복 제거 후)</strong></td>
+          <td><strong style="color:var(--sk-red);">7~11개월 (30%+)</strong></td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 6. 다음 단계 -->
+  <div class="card">
+    <h2>6. 다음 단계 (Action Items)</h2>
+    <table>
+      <thead>
+        <tr><th>Action</th><th>담당</th><th>기한</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>현행 마스터 스케줄 수집 및 As-Is 크리티컬 패스 분석</td>
+          <td>TBD</td>
+          <td>Phase 1 (4/30)</td>
+          <td>P6 데이터 또는 유사 프로젝트 실적 활용</td>
+        </tr>
+        <tr>
+          <td>장납기 기자재 목록 및 리드타임 데이터 수집</td>
+          <td>TBD + 조달팀</td>
+          <td>Phase 1 (4/30)</td>
+          <td>허재경 협조</td>
+        </tr>
+        <tr>
+          <td>패스트트랙 가능 구간 목록화 및 조건 정의</td>
+          <td>TBD</td>
+          <td>Phase 2 (5/16)</td>
+          <td>각 영역 담당자 인터뷰 병행</td>
+        </tr>
+        <tr>
+          <td>단축 효과 정량화 (Monte Carlo 또는 유사 프로젝트 비교)</td>
+          <td>TBD + 백민우</td>
+          <td>Phase 2 (5/16)</td>
+          <td>AI/DT 통합 과제와 연계</td>
+        </tr>
+        <tr>
+          <td>공정관리 혁신 로드맵 초안 작성</td>
+          <td>TBD</td>
+          <td>Phase 3 (5/22)</td>
+          <td>최종 보고서 반영</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>SK에코플랜트 Hi-tech | Fab 리드타임 30% 단축 프로젝트 | 2026</p>
+</footer>
+
+</body>
+</html>

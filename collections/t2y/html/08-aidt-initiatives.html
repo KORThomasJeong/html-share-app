@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08. AI/DT 과제 Pool & 우선순위 | SK에코플랜트 T2Y</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .matrix {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr;
+      grid-template-rows: auto 1fr 1fr;
+      gap: 0;
+      margin: 1.5rem 0;
+      border: 2px solid var(--sk-dark);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .matrix-corner {
+      background: var(--sk-dark);
+      color: white;
+      padding: 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .matrix-header {
+      background: var(--sk-dark);
+      color: white;
+      padding: 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    .matrix-label {
+      background: var(--sk-dark);
+      color: white;
+      padding: 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      writing-mode: horizontal-tb;
+    }
+    .matrix-cell {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      min-height: 140px;
+    }
+    .matrix-cell h4 {
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      display: inline-block;
+    }
+    .matrix-cell ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .matrix-cell ul li {
+      font-size: 0.8rem;
+      padding: 0.2rem 0;
+      color: var(--text-primary);
+    }
+    .matrix-cell.q1 {
+      background: #f0fdf4;
+    }
+    .matrix-cell.q1 h4 {
+      background: #059669;
+      color: white;
+    }
+    .matrix-cell.q2 {
+      background: #eff6ff;
+    }
+    .matrix-cell.q2 h4 {
+      background: #2563eb;
+      color: white;
+    }
+    .matrix-cell.q3 {
+      background: #fffbeb;
+    }
+    .matrix-cell.q3 h4 {
+      background: #d97706;
+      color: white;
+    }
+    .matrix-cell.q4 {
+      background: #f8fafc;
+    }
+    .matrix-cell.q4 h4 {
+      background: #94a3b8;
+      color: white;
+    }
+    .task-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .roadmap-timeline {
+      position: relative;
+      margin: 2rem 0;
+    }
+    .roadmap-phase {
+      display: flex;
+      align-items: stretch;
+      margin-bottom: 0;
+    }
+    .roadmap-label {
+      min-width: 140px;
+      padding: 1.2rem 1rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: white;
+      border-radius: 6px 0 0 6px;
+    }
+    .roadmap-label small {
+      font-weight: 400;
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
+    .roadmap-content {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      border: 1px solid var(--border);
+      border-left: none;
+      border-radius: 0 6px 6px 0;
+      background: white;
+    }
+    .roadmap-content h4 {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .roadmap-content ul {
+      margin-left: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .roadmap-content ul li {
+      margin-bottom: 0.25rem;
+    }
+    .roadmap-content .goal {
+      margin-top: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      background: #f8fafc;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .roi-highlight {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .roi-box {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: white;
+    }
+    .roi-box .number {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .roi-box .label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 0.3rem;
+    }
+    .full-table {
+      font-size: 0.8rem;
+    }
+    .full-table th {
+      font-size: 0.75rem;
+      padding: 0.5rem 0.6rem;
+      white-space: nowrap;
+    }
+    .full-table td {
+      padding: 0.45rem 0.6rem;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <span class="badge">Phase 2 — 심층분석</span>
+    <h1>08. AI/DT 과제 Pool &amp; 우선순위</h1>
+    <p class="subtitle">17개 AI/DT 과제 도출 및 Impact-Feasibility 기반 우선순위 평가</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Navigation -->
+  <nav>
+    <ul>
+      <li><a href="00-project-overview.html">00. 프로젝트 개요</a></li>
+      <li><a href="01-design-engineering.html">01. 설계/엔지니어링</a></li>
+      <li><a href="02-procurement-scm.html">02. 조달/SCM</a></li>
+      <li><a href="03-construction.html">03. 시공/건설</a></li>
+      <li><a href="04-mep-cleanroom.html">04. MEP/클린룸</a></li>
+      <li><a href="05-commissioning.html">05. 시운전/Qual</a></li>
+      <li><a href="06-process-management.html">06. 공정관리</a></li>
+      <li><a href="07-integrated-analysis.html">07. 통합 분석</a></li>
+      <li><a href="08-aidt-initiatives.html" class="active">08. AI/DT 과제</a></li>
+      <li><a href="09-final-report.html">09. 최종 보고서</a></li>
+    </ul>
+  </nav>
+
+  <!-- 1. 과제 Pool 전체 요약 -->
+  <div class="card">
+    <h2>1. AI/DT 과제 Pool 전체 요약 (17개 과제)</h2>
+    <div style="overflow-x:auto;">
+      <table class="full-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>과제명</th>
+            <th>영역</th>
+            <th>Impact</th>
+            <th>Feasibility</th>
+            <th>예상단축효과</th>
+            <th>예산(억원)</th>
+            <th>구분</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td><td>AI 기반 설계 자동화 (Generative Design)</td><td>설계</td>
+            <td><span class="tag tag-high">상</span></td><td><span class="tag tag-mid">중</span></td>
+            <td>2~3개월</td><td>15</td><td><span class="tag tag-strategic">Strategic</span></td>
+          </tr>
+          <tr>
+            <td>2</td><td>BIM-to-CD 자동 변환 시스템</td><td>설계</td>
+            <td><span class="tag tag-high">상</span></td><td><span class="tag tag-high">상</span></td>
+            <td>1~2개월</td><td>8</td><td><span class="tag tag-quickwin">Quick Win</span></td>
+          </tr>
+          <tr>
+            <td>3</td><td>AI Clash Detection (간섭 검토 자동화)</td><td>설계</td>
+            <td><span class="tag tag-high">상</span></td><td><span class="tag tag-high">상</span></td>
+            <td>1개월</td><td>5</td><td><span class="tag tag-quickwin">Quick Win</span></td>
+          </tr>
+          <tr>
+            <td>4</td><td>AI 기반 조달 리드타임 예측</td><td>조달</td>
+            <td><span class="tag tag-high">상</span></td><td><span class="tag tag-high">상</span></td>
+            <td>1~2개월</td><td>6</td><td><span class="tag tag-quickwin">Quick Win</span></td>
+          </tr>
+          <tr>
+            <td>5</td><td>공급망 디지털트윈 (SCM Digital Twin)</td><td>조달</td>
+            <td><span class="tag tag-high">상</span></td><td><span class="tag tag-mid">중</span></td>
+            <td>2~3개월</td><td>20</td><td><span class="tag tag-strategic">Strategic</span></td>
+          </tr>
+          <tr>
+            <td>6</td><td>AI 자동 발주/견적 비교 시스템</td><td>조달</td>
+            <td><span class="tag tag-mid">중</span></td><td><span class="tag tag-high">상</span></td>
+            <td>0.5~1개월</td><td>4</td><td><span class="tag tag-quickwin">Quick Win</span></td>
+          </tr>
+          <tr>
+            <td>7</td><td>AI 공정 스케줄링 최적화</td><td>시공</td>
+            <td><span class="tag tag-high">상</span></td><td><span class="tag tag-mid">중</span></td>
+            <td>2~3개월</td><td>12</td><td><span class="tag tag-strategic">Strategic</span></td>
+          </tr>
+          <tr>
+            <td>8</td><td>드론/LiDAR 기반 공정 모니터링</td><td>시공</td>
+            <td><span class="tag tag-mid">중</span></td><td><span class="tag tag-high">상</span></td>
+            <td>0.5~1개월</td><td>5</td><td><span class="tag tag-quickwin">Quick Win</span></td>
+          </tr>
+          <tr>
+            <td>9</td><td>스마트 안전 관리 (AI CCTV)</td><td>시공</td>
+            <td><span class="tag tag-mid">중</span></td><td><span class="tag tag-high">상</span></td>
+            <td>간접 효과</td><td>4</td><td><span class="tag tag-quickwin">Quick Win</span></td>
+          </tr>
+          <tr>
+            <td>10</td><td>3D 프린팅 기반 구조물 시공</td><td>시공</td>
+            <td><span class="tag tag-mid">중</span></td><td><span class="tag tag-low">하</span></td>
+            <td>1~2개월</td><td>25</td><td><span class="tag" style="background:#f1f5f9;color:#64748b;">보류</span></td>
+          </tr>
+          <tr>
+            <td>11</td><td>MEP 설비 배치 AI 최적화</td><td>MEP</td>
+            <td><span class="tag tag-high">상</span></td><td><span class="tag tag-mid">중</span></td>
+            <td>1~2개월</td><td>10</td><td><span class="tag tag-strategic">Strategic</span></td>
+          </tr>
+          <tr>
+            <td>12</td><td>클린룸 시공 시뮬레이션 (DT)</td><td>MEP</td>
+            <td><span class="tag tag-high">상</span></td><td><span class="tag tag-mid">중</span></td>
+            <td>1~2개월</td><td>12</td><td><span class="tag tag-strategic">Strategic</span></td>
+          </tr>
+          <tr>
+            <td>13</td><td>프리팹 모듈 자동 설계 시스템</td><td>MEP</td>
+            <td><span class="tag tag-mid">중</span></td><td><span class="tag tag-mid">중</span></td>
+            <td>1개월</td><td>8</td><td><span class="tag tag-mid">선택적</span></td>
+          </tr>
+          <tr>
+            <td>14</td><td>디지털 Commissioning 플랫폼</td><td>시운전</td>
+            <td><span class="tag tag-high">상</span></td><td><span class="tag tag-high">상</span></td>
+            <td>1~2개월</td><td>7</td><td><span class="tag tag-quickwin">Quick Win</span></td>
+          </tr>
+          <tr>
+            <td>15</td><td>AI 기반 Qual 프로토콜 자동 생성</td><td>시운전</td>
+            <td><span class="tag tag-mid">중</span></td><td><span class="tag tag-mid">중</span></td>
+            <td>0.5~1개월</td><td>5</td><td><span class="tag tag-mid">선택적</span></td>
+          </tr>
+          <tr>
+            <td>16</td><td>통합 디지털트윈 플랫폼</td><td>통합</td>
+            <td><span class="tag tag-high">상</span></td><td><span class="tag tag-mid">중</span></td>
+            <td>2~4개월</td><td>30</td><td><span class="tag tag-strategic">Strategic</span></td>
+          </tr>
+          <tr>
+            <td>17</td><td>AI 의사결정 지원 시스템 (승인 자동화)</td><td>통합</td>
+            <td><span class="tag tag-high">상</span></td><td><span class="tag tag-high">상</span></td>
+            <td>1~2개월</td><td>8</td><td><span class="tag tag-quickwin">Quick Win</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2. 우선순위 평가 매트릭스 -->
+  <div class="card">
+    <h2>2. 우선순위 평가 매트릭스</h2>
+    <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:1rem;">Impact x Feasibility 2x2 매트릭스 기반 분류</p>
+
+    <div class="matrix">
+      <!-- Row 0: Headers -->
+      <div class="matrix-corner">Impact /<br>Feasibility</div>
+      <div class="matrix-header">High Feasibility</div>
+      <div class="matrix-header">Low Feasibility</div>
+
+      <!-- Row 1: High Impact -->
+      <div class="matrix-label">High<br>Impact</div>
+      <div class="matrix-cell q1">
+        <h4>1사분면: 즉시 실행</h4>
+        <ul>
+          <li>#2 BIM-to-CD 자동 변환 (8억)</li>
+          <li>#3 AI Clash Detection (5억)</li>
+          <li>#4 AI 조달 리드타임 예측 (6억)</li>
+          <li>#14 디지털 Commissioning (7억)</li>
+          <li>#17 AI 의사결정 지원 (8억)</li>
+        </ul>
+      </div>
+      <div class="matrix-cell q2">
+        <h4>2사분면: 전략적 투자</h4>
+        <ul>
+          <li>#1 AI 설계 자동화 (15억)</li>
+          <li>#5 공급망 DT (20억)</li>
+          <li>#7 AI 공정 스케줄링 (12억)</li>
+          <li>#11 MEP 배치 AI 최적화 (10억)</li>
+          <li>#12 클린룸 시공 시뮬레이션 (12억)</li>
+          <li>#16 통합 DT 플랫폼 (30억)</li>
+        </ul>
+      </div>
+
+      <!-- Row 2: Low Impact -->
+      <div class="matrix-label">Low<br>Impact</div>
+      <div class="matrix-cell q3">
+        <h4>3사분면: 선택적</h4>
+        <ul>
+          <li>#6 AI 자동 발주/견적 비교 (4억)</li>
+          <li>#8 드론/LiDAR 모니터링 (5억)</li>
+          <li>#9 스마트 안전 관리 (4억)</li>
+          <li>#13 프리팹 모듈 자동 설계 (8억)</li>
+          <li>#15 AI Qual 프로토콜 자동 생성 (5억)</li>
+        </ul>
+      </div>
+      <div class="matrix-cell q4">
+        <h4>4사분면: 보류</h4>
+        <ul>
+          <li>#10 3D 프린팅 구조물 시공 (25억)</li>
+          <li style="color:var(--text-secondary); font-size:0.75rem; margin-top:0.5rem;">기술 성숙도(TRL) 부족<br>비용 대비 효과 불확실</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Quick Win 과제 Top 5 -->
+  <div class="card">
+    <h2>3. Quick Win 과제 (Top 5)</h2>
+    <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:1rem;">6개월 내 착수 가능, 빠른 성과 기대</p>
+
+    <div class="task-grid">
+      <div class="task-card quick-win">
+        <h4>QW-1. BIM-to-CD 자동 변환 시스템</h4>
+        <div class="meta">
+          <span>영역: 설계</span>
+          <span>예산: 8억원</span>
+          <span>PoC: 3개월</span>
+        </div>
+        <p style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-secondary);">BIM 모델에서 시공도면(CD)을 AI 기반으로 자동 생성. 도면 작성 시간 70% 단축, 설계 변경 시 자동 반영.</p>
+        <p style="margin-top:0.5rem;"><span class="tag tag-quickwin">단축 1~2개월</span> <span class="tag tag-high">즉시 착수</span></p>
+      </div>
+
+      <div class="task-card quick-win">
+        <h4>QW-2. AI Clash Detection (간섭 검토 자동화)</h4>
+        <div class="meta">
+          <span>영역: 설계</span>
+          <span>예산: 5억원</span>
+          <span>PoC: 2개월</span>
+        </div>
+        <p style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-secondary);">ML 기반 간섭 패턴 학습으로 자동 검토 및 해결안 제안. 간섭 검출률 95%+, 재작업 비용 40% 절감.</p>
+        <p style="margin-top:0.5rem;"><span class="tag tag-quickwin">단축 1개월</span> <span class="tag tag-high">즉시 착수</span></p>
+      </div>
+
+      <div class="task-card quick-win">
+        <h4>QW-3. AI 기반 조달 리드타임 예측</h4>
+        <div class="meta">
+          <span>영역: 조달</span>
+          <span>예산: 6억원</span>
+          <span>PoC: 4개월</span>
+        </div>
+        <p style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-secondary);">과거 데이터 기반 ML 예측 모델로 리드타임 정확도 85%+ 달성. 선발주 최적 시점 도출.</p>
+        <p style="margin-top:0.5rem;"><span class="tag tag-quickwin">단축 1~2개월</span> <span class="tag tag-mid">1개월 후 착수</span></p>
+      </div>
+
+      <div class="task-card quick-win">
+        <h4>QW-4. 디지털 Commissioning 플랫폼</h4>
+        <div class="meta">
+          <span>영역: 시운전</span>
+          <span>예산: 7억원</span>
+          <span>PoC: 3개월</span>
+        </div>
+        <p style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-secondary);">모바일 기반 디지털 체크리스트 + 실시간 데이터 수집 + 자동 리포팅. Commissioning 시간 40% 단축.</p>
+        <p style="margin-top:0.5rem;"><span class="tag tag-quickwin">단축 1~2개월</span> <span class="tag tag-high">즉시 착수</span></p>
+      </div>
+
+      <div class="task-card quick-win">
+        <h4>QW-5. AI 의사결정 지원 시스템 (승인 자동화)</h4>
+        <div class="meta">
+          <span>영역: 통합</span>
+          <span>예산: 8억원</span>
+          <span>PoC: 4개월</span>
+        </div>
+        <p style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-secondary);">NLP 기반 문서 자동 검토 + 규정 적합성 자동 판단. 승인 소요 시간 70% 단축.</p>
+        <p style="margin-top:0.5rem;"><span class="tag tag-quickwin">단축 1~2개월</span> <span class="tag tag-mid">2개월 후 착수</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Strategic 과제 Top 5 -->
+  <div class="card">
+    <h2>4. Strategic 과제 (Top 5)</h2>
+    <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:1rem;">중장기 투자, 큰 임팩트 기대</p>
+
+    <div class="task-grid">
+      <div class="task-card strategic">
+        <h4>ST-1. 통합 디지털트윈 플랫폼</h4>
+        <div class="meta">
+          <span>영역: 통합</span>
+          <span>예산: 30억원</span>
+          <span>구축: 18~24개월</span>
+        </div>
+        <p style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-secondary);">설계~시운전 전 영역 통합 관리. 클라우드 기반 BIM + IoT + AI 통합 플랫폼. 의사결정 속도 50% 향상.</p>
+        <p style="margin-top:0.5rem;"><span class="tag tag-strategic">단축 2~4개월</span></p>
+      </div>
+
+      <div class="task-card strategic">
+        <h4>ST-2. AI 공정 스케줄링 최적화</h4>
+        <div class="meta">
+          <span>영역: 시공</span>
+          <span>예산: 12억원</span>
+          <span>구축: 12~18개월</span>
+        </div>
+        <p style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-secondary);">강화학습 기반 동적 스케줄링 엔진. 공정 효율 25% 향상, 유휴 시간 40% 감소.</p>
+        <p style="margin-top:0.5rem;"><span class="tag tag-strategic">단축 2~3개월</span></p>
+      </div>
+
+      <div class="task-card strategic">
+        <h4>ST-3. 공급망 디지털트윈 (SCM DT)</h4>
+        <div class="meta">
+          <span>영역: 조달</span>
+          <span>예산: 20억원</span>
+          <span>구축: 12~18개월</span>
+        </div>
+        <p style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-secondary);">글로벌 공급망 DT 모델링. 조달 지연 리스크 60% 감소, 긴급 조달 비용 30% 절감.</p>
+        <p style="margin-top:0.5rem;"><span class="tag tag-strategic">단축 2~3개월</span></p>
+      </div>
+
+      <div class="task-card strategic">
+        <h4>ST-4. AI 기반 설계 자동화 (Generative Design)</h4>
+        <div class="meta">
+          <span>영역: 설계</span>
+          <span>예산: 15억원</span>
+          <span>구축: 18~24개월</span>
+        </div>
+        <p style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-secondary);">AI 설계 조건 입력 → 최적 설계안 자동 생성. 설계 기간 50% 단축, 다목적 최적화.</p>
+        <p style="margin-top:0.5rem;"><span class="tag tag-strategic">단축 2~3개월</span></p>
+      </div>
+
+      <div class="task-card strategic">
+        <h4>ST-5. MEP 설비 배치 AI 최적화</h4>
+        <div class="meta">
+          <span>영역: MEP</span>
+          <span>예산: 10억원</span>
+          <span>구축: 12~15개월</span>
+        </div>
+        <p style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-secondary);">AI 기반 3D 배치 최적화 + 자동 배관 라우팅. 배치 설계 시간 60% 단축, 간섭 80% 감소.</p>
+        <p style="margin-top:0.5rem;"><span class="tag tag-strategic">단축 1~2개월</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 실행 로드맵 -->
+  <div class="card">
+    <h2>5. 실행 로드맵</h2>
+
+    <div class="roadmap-timeline">
+      <div class="roadmap-phase" style="margin-bottom:0.5rem;">
+        <div class="roadmap-label" style="background:var(--sk-green);">
+          단기
+          <small>6개월</small>
+        </div>
+        <div class="roadmap-content">
+          <h4>Quick Win 과제 착수</h4>
+          <ul>
+            <li><strong>1~2월:</strong> PoC 환경 구축, 데이터 수집 (QW-1, QW-2, QW-4 즉시 착수)</li>
+            <li><strong>3~4월:</strong> PoC 개발 및 테스트 (QW-3, QW-5 데이터 준비 후 착수)</li>
+            <li><strong>5~6월:</strong> PoC 결과 검증 및 파일럿 프로젝트 적용</li>
+          </ul>
+          <div class="goal" style="color:var(--sk-green);">목표: Quick Win 5개 과제 PoC 완료, 리드타임 5~8% 단축 효과 검증</div>
+        </div>
+      </div>
+
+      <div class="roadmap-phase" style="margin-bottom:0.5rem;">
+        <div class="roadmap-label" style="background:var(--sk-blue);">
+          중기
+          <small>1년</small>
+        </div>
+        <div class="roadmap-content">
+          <h4>Strategic 과제 PoC</h4>
+          <ul>
+            <li><strong>Q1~Q2:</strong> 요구사항 정의, 아키텍처 설계 (ST-1 통합 DT, ST-2 공정 스케줄링)</li>
+            <li><strong>Q2~Q3:</strong> PoC 개발 및 파일럿 (ST-3 SCM DT, ST-4 설계 자동화)</li>
+            <li><strong>Q3~Q4:</strong> 검증 및 본격 개발 착수 (ST-5 MEP 최적화, Quick Win 확산)</li>
+          </ul>
+          <div class="goal" style="color:var(--sk-blue);">목표: Strategic 5개 과제 PoC 완료, 3개 프로젝트 이상 적용, 리드타임 15~20% 달성</div>
+        </div>
+      </div>
+
+      <div class="roadmap-phase">
+        <div class="roadmap-label" style="background:var(--sk-red);">
+          장기
+          <small>2년</small>
+        </div>
+        <div class="roadmap-content">
+          <h4>전면 확산 &amp; 고도화</h4>
+          <ul>
+            <li><strong>Y2 Q1~Q2:</strong> Strategic 과제 본격 구축 (통합 DT 플랫폼, AI 스케줄링)</li>
+            <li><strong>Y2 Q2~Q3:</strong> 전사 확산 및 표준화 (전 과제)</li>
+            <li><strong>Y2 Q3~Q4:</strong> 고도화 및 AI 모델 정교화 (데이터 축적 기반 업그레이드)</li>
+          </ul>
+          <div class="goal" style="color:var(--sk-red);">목표: 17개 전체 과제 구축 완료, 전 프로젝트 적용, 리드타임 30%+ 단축 달성</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 예상 총 투자비 & ROI -->
+  <div class="card">
+    <h2>6. 예상 총 투자비 &amp; ROI 요약</h2>
+
+    <h3>총 투자비</h3>
+    <table>
+      <thead><tr><th>구분</th><th>과제 수</th><th>투자비(억원)</th></tr></thead>
+      <tbody>
+        <tr><td>Quick Win (1사분면)</td><td>5개</td><td>34</td></tr>
+        <tr><td>선택적 (3사분면, 선별)</td><td>5개</td><td>26</td></tr>
+        <tr><td>Strategic (2사분면)</td><td>6개</td><td>99</td></tr>
+        <tr><td>보류 (4사분면)</td><td>1개</td><td>25</td></tr>
+        <tr style="font-weight:700;"><td>합계</td><td>17개</td><td>184</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:0.5rem;"><strong>우선 투자 (Quick Win + Strategic):</strong> 133억원 (2년)</p>
+
+    <h3>ROI 핵심 지표</h3>
+    <div class="roi-highlight">
+      <div class="roi-box">
+        <div class="number" style="color:var(--sk-red);">142억</div>
+        <div class="label">총 투자비 (QW+ST)</div>
+      </div>
+      <div class="roi-box">
+        <div class="number" style="color:var(--sk-blue);">6~10개월</div>
+        <div class="label">프로젝트당 공기 단축</div>
+      </div>
+      <div class="roi-box">
+        <div class="number" style="color:var(--sk-green);">300~1,500억</div>
+        <div class="label">연간 절감 효과</div>
+      </div>
+      <div class="roi-box">
+        <div class="number" style="color:var(--sk-orange);">500~1,000%</div>
+        <div class="label">3년 ROI</div>
+      </div>
+    </div>
+
+    <h3>정성적 효과</h3>
+    <table>
+      <thead><tr><th>항목</th><th>효과</th></tr></thead>
+      <tbody>
+        <tr><td>경쟁력 강화</td><td>리드타임 30% 단축 → 고객사 Time-to-Market 지원, 수주 경쟁력 확보</td></tr>
+        <tr><td>품질 향상</td><td>AI 기반 자동 검토 → 설계/시공 품질 향상, 재작업 감소</td></tr>
+        <tr><td>인력 효율화</td><td>반복 업무 자동화 → 핵심 인력의 고부가가치 업무 집중</td></tr>
+        <tr><td>데이터 자산화</td><td>프로젝트 데이터 체계적 축적 → 지속적 개선 기반 확보</td></tr>
+        <tr><td>ESG 기여</td><td>재작업 감소, 자원 효율화 → 탄소 배출 저감</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  <p>SK에코플랜트 Hi-tech | T2Y 프로젝트 — 반도체 Fab 건설 리드타임 30% 단축</p>
+  <p>Confidential &copy; 2026 SK에코플랜트. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

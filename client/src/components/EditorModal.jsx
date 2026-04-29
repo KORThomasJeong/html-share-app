@@ -1,21 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { X, Save, Upload } from 'lucide-react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+
+const VISIBILITY_OPTIONS = [
+    { value: 'private', label: '비공개' },
+    { value: 'group', label: '그룹' },
+    { value: 'public', label: '전체공개' },
+];
 
 const EditorModal = ({ isOpen, onClose, onSave, initialData }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [visibility, setVisibility] = useState('private');
+    const [groupIds, setGroupIds] = useState([]);
+    const [groups, setGroups] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (initialData) {
             setTitle(initialData.title);
             setContent(initialData.content);
+            setVisibility(initialData.visibility || 'private');
+            setGroupIds((initialData.Groups || []).map(g => String(g.id)));
         } else {
             setTitle('');
             setContent('');
+            setVisibility('private');
+            setGroupIds([]);
         }
     }, [initialData, isOpen]);
+
+    useEffect(() => {
+        if (isOpen) {
+            axios.get('/api/groups')
+                .then(r => setGroups(r.data))
+                .catch(() => setGroups([]));
+        }
+    }, [isOpen]);
 
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
@@ -30,7 +52,7 @@ const EditorModal = ({ isOpen, onClose, onSave, initialData }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        await onSave({ title, content });
+        await onSave({ title, content, visibility, groupIds: groupIds.map(Number) });
         setLoading(false);
         onClose();
     };
@@ -66,6 +88,36 @@ const EditorModal = ({ isOpen, onClose, onSave, initialData }) => {
                                 required
                             />
                         </div>
+
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>공개범위</label>
+                            <select
+                                className="input"
+                                value={visibility}
+                                onChange={(e) => setVisibility(e.target.value)}
+                            >
+                                {VISIBILITY_OPTIONS.map(opt => (
+                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {visibility === 'group' && groups.length > 0 && (
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>그룹 선택</label>
+                                <select
+                                    className="input"
+                                    multiple
+                                    value={groupIds}
+                                    onChange={(e) => setGroupIds([...e.target.selectedOptions].map(o => o.value))}
+                                    style={{ height: '100px' }}
+                                >
+                                    {groups.map(g => (
+                                        <option key={g.id} value={String(g.id)}>{g.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
 
                         <div style={{ marginBottom: '1.5rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
